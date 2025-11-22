@@ -23,6 +23,31 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
+        User::factory()->create([
+            'name' => 'jokow',
+            'email' => 'jokow@gmail.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'prabow',
+            'email' => 'prabow@gmail.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'bahlil',
+            'email' => 'bahlil@gmail.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'anis',
+            'email' => 'anis@gmail.com',
+        ]);
+        
+        User::factory()->create([
+            'name' => 'luhut',
+            'email' => 'luhut@gmail.com',
+        ]);
+
         $this->call([
             CategorySeeder::class,
             VideoSeeder::class,

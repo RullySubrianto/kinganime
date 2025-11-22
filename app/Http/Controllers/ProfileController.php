@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ImageHelper;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,20 @@ class ProfileController extends Controller
 
         // Return Back
         return back()->with('success', 'Password berhasil diubah.');
+    }
+
+    public function controlUsers()
+    {
+        return view('profile.control-users');
+    }
+
+    // Destroy Users
+    public function destroyControlUsers(User $user)
+    {
+        // Delete user
+        $user->delete();
+
+        return back()->with('success', 'User berhasil dihapus');
     }
  
     public function allVideo()
