@@ -102,7 +102,7 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'external_link' => 'required|string', 
-            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480',
+            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480|dimensions:ratio=25/14',
             'status' => 'required|in:published,draft',
         ]);
         
@@ -149,5 +149,64 @@ class ProfileController extends Controller
 
         // Return
         return back()->with('success', 'Video berhasil dihapus.');
+    }
+
+    public function savedVideo()
+    {
+        // User Data
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // Saved Videos
+        $videos = $user->savedVideo()
+            ->orderByPivot('created_at', 'desc')
+            ->paginate(12);
+
+        return view('profile.saved-video', [
+            'user' => $user,
+            'videos' => $videos
+        ]);
+    }
+
+    public function history()
+    {
+        // User Data
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user) {
+            $videos = $user->history()->paginate(12);
+
+            return view('profile.history', [
+                'videos' => $videos,
+            ]);
+        }
+
+        return view('profile.history', [
+            'videos' => null
+        ]);
+    }
+
+    public function historyGuest(Request $request)
+    {
+        // Validate Videos Ids
+        $request->validate([
+            'ids' => 'nullable|array',
+            'ids.*' => 'integer|exists:videos,id',
+        ]);
+
+        // Keep original viewing order
+        $orderedIds = $request->ids;
+
+        // dd($request->ids);
+
+        $videos = Video::whereIn('id', $request->ids)
+            ->where('status', 'published')
+            ->orderByRaw("FIELD(id, " . implode(',', $orderedIds) . ")")
+            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count']);
+
+        return view('profile.history', [
+            'videos' => $videos,
+        ]);
     }
 }

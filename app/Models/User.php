@@ -65,4 +65,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserPreference::class);
     }
+
+    public function history()
+    {
+        return $this->belongsToMany(Video::class, 'video_user_histories')
+            ->withTimestamps()
+            ->orderByPivot('updated_at', 'desc');
+    }
 }

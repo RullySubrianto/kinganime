@@ -3,11 +3,18 @@
 {{-- Video --}}
 <div>
     {{-- Thumbnail --}}
-    <a href={{ route('video.show', $video->id) }}>
+    <a 
+        href={{ route('video.show', $video->id) }}
+        class="">
         <img 
-            src={{ $video->thumbnail }} 
+            src="{{ $video->thumbnail }}" 
             alt="video"
-            class="h-60 w-full aspect-video object-contain bg-[#d9d9d9] rounded-xl">
+            loading="lazy"
+            fetchpriority="low"
+            decoding="async"
+            class="w-full aspect-video object-cover bg-[#d9d9d9] rounded-xl"
+            style="filter: blur(10px);"
+            onload="this.style.filter='blur(0px)';">
     </a>
 
     {{-- Title & Menu --}}

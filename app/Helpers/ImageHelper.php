@@ -22,10 +22,11 @@ class ImageHelper
         // Convert + compress
         Image::load($tempPath)
             ->format('webp')
+            ->width(400)
             ->quality(80)
             ->optimize()
             ->save(storage_path("app/public/$original"));
 
-        return "storage/$original";
+        return "/storage/$original";
     }
 }

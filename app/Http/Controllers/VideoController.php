@@ -15,15 +15,53 @@ class VideoController extends Controller
 
     public function home()
     {
+        // Videos
         $videos = Video::where('status', 'published')
             ->latest()
-            ->limit(6)
-            ->get();
+            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count'])
+            ->onEachSide(1);
 
-        // dd($videos);
+        // Categrories
+        $categories = Category::latest()->get(['id', 'name']);
 
         return view('home', [
             'videos' => $videos,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function searchVideo(Request $request)
+    {
+        // Validate Input
+        $request->validate([
+            'search' => 'nullable|string',
+            'orderBy' => 'nullable|in:desc,asc',
+        ]);
+
+        // Query Builder
+        $videos = Video::query();
+
+        // Search
+        $videos->when($request->search, function ($query) use($request) {
+            return $query->where('title', 'like', '%' . $request->search . '%');
+        });
+
+        // Order By
+        $videos->when($request->orderBy, function ($query) use($request) {
+            return $query->orderBy('created_at', $request->orderBy);
+        });
+
+        // Run the query and get results
+        $videos = $videos->latest()
+            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count'])
+            ->appends($request->query())
+            ->onEachSide(1);
+
+        // Return
+        return view('search', [
+            'videos' => $videos,
+            'search' => $request->search,
+            'orderBy' => $request->orderBy,
         ]);
     }
 
@@ -43,7 +81,7 @@ class VideoController extends Controller
         $video = $request->validate([
             'title' => 'required|string',
             'external_link' => 'required|string', 
-            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480',
+            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480|dimensions:ratio=25/14',
             'status' => 'required|in:published,draft',
         ]);
         
@@ -82,16 +120,30 @@ class VideoController extends Controller
         // Authorize
         $this->authorize('view', $video);
 
-        // Increase Views Count
-        $video->views_count += 1;
-        $video->save();
+        // Increase Views Count safely
+        $video->increment('views_count');
+
+        // User Data
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // Update User History
+        if ($user) {
+            $user->history()->syncWithoutDetaching([
+                $video->id => ['updated_at' => now()]
+            ]);
+        }
+
+        // Video
+        $video = Video::select('id', 'title', 'thumbnail', 'external_link', 'views_count')
+            ->findOrFail($video->id);
 
         // Other Videos
         $otherVideos = Video::where('status', 'published')
-            ->orWhere('id', '!=', $video->id)
+            ->where('id', '!=', $video->id)
             ->latest()
             ->limit(6)
-            ->get();
+            ->get(['id', 'title', 'thumbnail', 'views_count']);
         
         // Return Page
         return view('video', [

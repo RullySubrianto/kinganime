@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <section class="bg-gray-50 flex flex-col justify-center items-center">
+    <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container py-6">
             {{-- Video --}}
@@ -60,11 +60,27 @@
 
             {{-- Other Videos --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @foreach ($otherVideos as $video)
+                @foreach ($otherVideos as $otherVideo)
                     {{-- Video --}}
-                    <x-video-card :video="$video"/>
+                    <x-video-card :video="$otherVideo"/>
                 @endforeach
             </div>
         </div>
     </section>
+
+    <script>
+        const videoId = "{{ $video->id }}";
+        console.log(videoId);
+
+        let history = JSON.parse(localStorage.getItem('video_history')) || [];
+
+        // Avoid Duplicate
+        history = history.filter(id => id !== videoId);
+        history.unshift(videoId);
+
+        // Limit
+        localStorage.setItem('video_history', JSON.stringify(history.slice(0,100)));
+    </script>
+
+
 </x-layouts.app>

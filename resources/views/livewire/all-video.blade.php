@@ -142,23 +142,23 @@
                                     Judul
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colThumbnail" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colThumbnail" type="checkbox" class="cursor-pointer"/>
                                     Thumbnail
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colExternalLink" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colExternalLink" type="checkbox" class="cursor-pointer"/>
                                     Link Eksternal
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colStatus" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colStatus" type="checkbox" class="cursor-pointer"/>
                                     Status
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colViewsCount" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colViewsCount" type="checkbox" class="cursor-pointer"/>
                                     Viewers
                                 </label>
 

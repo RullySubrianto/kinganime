@@ -5,24 +5,38 @@
             'route' => 'profile.index',
             'label' => 'Informasi Pribadi',
             'icon' => 'user',
+            'access'   => 'auth',
         ],
         [
             'route' => 'users.index',
             'label' => 'Kontrol Pengguna',
             'icon' => 'user-defense',
-            'can'   => 'isAdmin',
+            'access'   => 'can:isAdmin',
         ],
         [
             'route' => 'all-video.index',
             'label' => 'Semua Video',
             'icon' => 'list',
-            'can'   => 'isAdmin',
+            'access'   => 'can:isAdmin',
         ],
         [
             'route' => 'post.create',
             'label' => 'Post Video',
             'icon' => 'plus-circle',
-            'can'   => 'isAdmin',
+            'access'   => 'can:isAdmin',
+        ],
+        [
+            'route' => 'saved-video.index',
+            'label' => 'Favorit',
+            'icon' => 'heart',
+            'access'   => 'auth',
+        ],
+        [
+            'route' => 'history.index',
+            'url' => '/history',
+            'label' => 'History',
+            'icon' => 'history',
+            'access'   => 'public',
         ],
     ];
 @endphp
@@ -31,13 +45,28 @@
     <ul class="space-y-2">
         @foreach ($sidebarItems as $sidebarItem)
             {{-- Check permission --}}
-            @if(isset($sidebarItem['can']) && !auth()->user()->can($sidebarItem['can']))
+            @php $access = $sidebarItem['access'] ?? 'public'; @endphp
+
+            @if($access === 'auth' && !auth()->check())
+                @continue
+            @endif
+
+            @if(Str::startsWith($access, 'can:') && !auth()->user()?->can(Str::after($access, 'can:')))
                 @continue
             @endif
 
             {{-- Route --}}
             @php
-                $isActive = request()->routeIs($sidebarItem['route']);
+                $isActive = false;
+
+                // 1. Check route name first (only valid if route exists and matches)
+                if (isset($sidebarItem['route']) && request()->routeIs($sidebarItem['route'])) {
+                    $isActive = true;
+
+                // 2. Otherwise check URL if defined
+                } elseif (isset($sidebarItem['url']) && str(request()->path())->startsWith(ltrim($sidebarItem['url'], '/'))) {
+                    $isActive = true;
+                }
             @endphp
 
             <li>

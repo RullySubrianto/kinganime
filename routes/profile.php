@@ -63,4 +63,19 @@ Route::middleware('auth')->controller(ProfileController::class)->group(function 
             Route::delete('/{video}', 'destroyVideoAllVideo')
                 ->name('destroy');
     });
+
+    // Saved Video Page
+    Route::get('/video-tersimpan', 'savedVideo')
+        ->name('saved-video.index');
+
+});
+
+Route::controller(ProfileController::class)->group(function () {
+    // History Page
+    Route::get('/history', 'history')
+        ->name('history.index');
+
+    // History Page for Guest
+    Route::get('/history-guest', 'historyGuest')
+        ->name('history-guest.index');
 });

@@ -142,13 +142,13 @@
                                     Nama
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colEmail" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colEmail" type="checkbox" class="cursor-pointer"/>
                                     Email
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
-                                    <input wire:model="colCreatedAt" type="checkbox" />
+                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                    <input wire:model="colCreatedAt" type="checkbox" class="cursor-pointer"/>
                                     Tanggal Dibuat
                                 </label>
 

@@ -1,15 +1,13 @@
 <x-layouts.app>
-    <section class="bg-gray-50 flex flex-col justify-center items-center">
+    <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container space-y-6 py-6">
             {{-- Tabs --}}
             <div class="self-start flex flex-row overflow-x-auto whitespace-nowrap scrollbar-hide gap-4">
                 {{-- Tab --}}
-                <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">Film Action</a>
-                <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">Film Horror</a>
-                <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">Film Trailer</a>
-                <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">Film Gore</a>
-                <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">Film Romance</a>
+                @foreach ($categories as $category)
+                    <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">{{ $category->name }}</a>
+                @endforeach
             </div>
 
             {{-- Videos --}}
@@ -19,6 +17,9 @@
                     <x-video-card :video="$video"/>
                 @endforeach
             </div>
+
+            {{-- Pagination --}}
+            {{ $videos->links() }}
         </div>
     </section>
 </x-layouts.app>

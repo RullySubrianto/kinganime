@@ -8,6 +8,10 @@ Route::controller(VideoController::class)->group(function () {
     Route::get('/', 'home')
         ->name('index');
 
+    // Search Video Page
+    Route::get('/cari-video', 'searchVideo')
+        ->name('search-video');
+
     // Post Video Page in Profile - Admin
     Route::middleware(['auth', 'can:isAdmin'])
         ->prefix('post-video')
