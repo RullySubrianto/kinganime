@@ -61,41 +61,75 @@
                     transition-all duration-200">
                 <nav class="p-2 text-sm flex flex-col w-max min-w-fit">
                     <ul class="space-y-2">
-                        @foreach ($sidebarItems as $sidebarItem)
-                            {{-- Check permission --}}
-                            @php $access = $sidebarItem['access'] ?? 'public'; @endphp
+                        @auth
+                            @foreach ($sidebarItems as $sidebarItem)
+                                {{-- Check permission --}}
+                                @php $access = $sidebarItem['access'] ?? 'public'; @endphp
 
-                            @if($access === 'auth' && !auth()->check())
-                                @continue
-                            @endif
+                                @if($access === 'auth' && !auth()->check())
+                                    @continue
+                                @endif
 
-                            @if(Str::startsWith($access, 'can:') && !auth()->user()?->can(Str::after($access, 'can:')))
-                                @continue
-                            @endif
+                                @if(Str::startsWith($access, 'can:') && !auth()->user()?->can(Str::after($access, 'can:')))
+                                    @continue
+                                @endif
 
-                            {{-- Route --}}
-                            @php
-                                $isActive = false;
+                                {{-- Route --}}
+                                @php
+                                    $isActive = false;
 
-                                // 1. Check route name first (only valid if route exists and matches)
-                                if (isset($sidebarItem['route']) && request()->routeIs($sidebarItem['route'])) {
-                                    $isActive = true;
+                                    // 1. Check route name first (only valid if route exists and matches)
+                                    if (isset($sidebarItem['route']) && request()->routeIs($sidebarItem['route'])) {
+                                        $isActive = true;
 
-                                // 2. Otherwise check URL if defined
-                                } elseif (isset($sidebarItem['url']) && str(request()->path())->startsWith(ltrim($sidebarItem['url'], '/'))) {
-                                    $isActive = true;
-                                }
-                            @endphp
+                                    // 2. Otherwise check URL if defined
+                                    } elseif (isset($sidebarItem['url']) && str(request()->path())->startsWith(ltrim($sidebarItem['url'], '/'))) {
+                                        $isActive = true;
+                                    }
+                                @endphp
 
+                                <li>
+                                    <a 
+                                        href={{ route($sidebarItem['route']) }} 
+                                        class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
+                                        <x-icon :name="$sidebarItem['icon']" class="w-3 h-3" />
+                                        <p class="text-sm">{{ $sidebarItem['label'] }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endauth
+
+                        @guest
+                            {{-- History --}}
                             <li>
                                 <a 
-                                    href={{ route($sidebarItem['route']) }} 
-                                    class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
-                                    <x-icon :name="$sidebarItem['icon']" class="w-3 h-3" />
-                                    <p class="text-sm">{{ $sidebarItem['label'] }}</p>
+                                    href={{ route('history.index') }} 
+                                    class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded text-gray-500 hover:text-primary hover:bg-[#276add10]">
+                                    <x-icon name="history" class="w-3 h-3" />
+                                    <p class="text-sm">History</p>
                                 </a>
                             </li>
-                        @endforeach
+
+                            {{-- Login --}}
+                            <li>
+                                <a 
+                                    href={{ route('login') }} 
+                                    class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded text-gray-500 hover:text-primary hover:bg-[#276add10]">
+                                    <x-icon name="login" class="w-3 h-3" />
+                                    <p class="text-sm">Masuk</p>
+                                </a>
+                            </li>
+
+                            {{-- Sign Up --}}
+                            <li>
+                                <a 
+                                    href={{ route('register') }} 
+                                    class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded text-gray-500 hover:text-primary hover:bg-[#276add10]">
+                                    <x-icon name="register" class="w-3 h-3" />
+                                    <p class="text-sm">Daftar</p>
+                                </a>
+                            </li>
+                        @endguest
                     </ul>
                 </nav>
             </div>
