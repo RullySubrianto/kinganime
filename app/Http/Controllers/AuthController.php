@@ -38,7 +38,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // Redirect
-        return redirect(route('profile.index'));
+        return redirect(route('profile.index'))->withInput();
     }
 
     public function loginCreate()
@@ -61,6 +61,15 @@ class AuthController extends Controller
             return redirect(route('profile.index'));
         }
 
-        return back()->with('error', 'Email atau password salah');
+        return back()->withInput();
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->regenerate();
+
+        return redirect()->route('login');
     }
 }

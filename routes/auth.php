@@ -18,6 +18,6 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 });
 
 Route::middleware('auth')->controller(AuthController::class)->group(function () {
-    Route::post('logout', 'destroy')
+    Route::post('logout', 'logout')
         ->name('logout');
 });

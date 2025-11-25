@@ -3,7 +3,7 @@
         {{-- Container --}}
         <div class="container py-6">
             {{-- Video --}}
-            <div class="mb-6">
+            <article class="mb-6">
                 <video 
                     autoplay="true" 
                     controls="" 
@@ -56,9 +56,12 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </article>
 
             {{-- Other Videos --}}
+            {{-- Title --}}
+            <p class="text-xl font-medium mb-2 inline-flex items-center gap-2">Video Lainnya</p>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach ($otherVideos as $otherVideo)
                     {{-- Video --}}

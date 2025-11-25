@@ -142,13 +142,28 @@ class VideoController extends Controller
         $otherVideos = Video::where('status', 'published')
             ->where('id', '!=', $video->id)
             ->latest()
-            ->limit(6)
+            ->limit(12)
             ->get(['id', 'title', 'thumbnail', 'views_count']);
         
         // Return Page
         return view('video', [
             'video' => $video,
             'otherVideos' => $otherVideos,
+        ]);
+    }
+
+    public function category(Category $category)
+    {
+        // Videos
+        $videos = $category->videos()
+            ->where('status', 'published')
+            ->orderBy('videos.created_at', 'desc')
+            ->paginate(12, ['videos.id', 'videos.title', 'videos.thumbnail', 'videos.views_count'])
+            ->onEachSide(1);
+
+        return view('category', [
+            'category' => $category,
+            'videos' => $videos,
         ]);
     }
 

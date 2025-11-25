@@ -24,9 +24,13 @@ Route::controller(VideoController::class)->group(function () {
                 ->name('store');
     });
 
-    // Dedicated video Page
+    // Dedicated Video Page
     Route::get('/video/{video}', 'show')
         ->name('video.show');
+
+    // Dedicated Category Page
+    Route::get('/category/{category}', 'category')
+        ->name('category.show');
 
     // Save Video button
     Route::post('/video/{video}/simpan', 'saveVideo')

@@ -97,6 +97,14 @@
                                     </a>
                                 </li>
                             @endforeach
+                            <li>
+                                <a 
+                                    onclick="document.getElementById('logout-form').submit(); return false;"
+                                    class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded text-gray-500 hover:text-primary hover:bg-[#276add10]">
+                                    <x-icon name="logout" class="w-3 h-3" />
+                                    <p class="text-sm">Keluar</p>
+                                </a>
+                            </li>
                         @endauth
 
                         @guest
@@ -241,12 +249,21 @@
                                     <li>
                                         <a 
                                             href={{ route($sidebarItem['route']) }} 
-                                            class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
+                                            class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded cursor-pointer {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
                                             <x-icon :name="$sidebarItem['icon']" class="w-3 h-3" />
                                             <p class="text-sm">{{ $sidebarItem['label'] }}</p>
                                         </a>
                                     </li>
                                 @endforeach
+
+                                <li>
+                                    <a 
+                                        onclick="document.getElementById('logout-form').submit(); return false;"
+                                        class="flex flex-row items-center gap-2 py-1 ps-3 pe-8 rounded text-gray-500 hover:text-primary hover:bg-[#276add10] cursor-pointer">
+                                        <x-icon name="logout" class="w-3 h-3" />
+                                        <p class="text-sm">Keluar</p>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -254,4 +271,8 @@
             @endauth
         </ul>
     </div>
+
+    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+        @csrf
+    </form>
 </header>

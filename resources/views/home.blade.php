@@ -6,7 +6,11 @@
             <div class="self-start flex flex-row overflow-x-auto whitespace-nowrap scrollbar-hide gap-4">
                 {{-- Tab --}}
                 @foreach ($categories as $category)
-                    <a class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">{{ $category->name }}</a>
+                    <a 
+                        href="{{ route('category.show', $category) }}"
+                        class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">
+                        {{ $category->name }}
+                    </a>
                 @endforeach
             </div>
 

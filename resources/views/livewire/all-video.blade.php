@@ -311,7 +311,7 @@
                                 <img 
                                     src="{{ $video->thumbnail }}"
                                     alt="Thumbnail"
-                                    class="w-20 aspect-video rounded-md object-contain bg-gray-100">
+                                    class="w-20 aspect-video rounded-md object-cover bg-gray-100">
                             </td>
                         @endif
 

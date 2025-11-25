@@ -3,7 +3,7 @@
         {{-- Container --}}
         <div class="container mx-auto flex flex-col lg:flex-row gap-x-6">
             {{-- Sidebar --}}
-            <div class="min-w-[22%] hidden lg:flex">
+            <div class="min-w-[22%] hidden lg:block">
                 <x-profile-sidebar />
             </div>
 

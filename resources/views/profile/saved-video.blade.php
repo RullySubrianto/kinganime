@@ -3,15 +3,15 @@
         {{-- Container --}}
         <div class="container mx-auto flex flex-col lg:flex-row gap-x-6">
             {{-- Sidebar --}}
-            <div class="min-w-[22%] hidden lg:flex">
+            <div class="min-w-[22%] hidden lg:block">
                 <x-profile-sidebar />
             </div>
 
             {{-- Content --}}
             <div class="flex-1">
                 {{-- Title --}}
-                <h1 class="text-xl mb-6 inline-flex items-center gap-2">
-                    History
+                <h1 class="text-2xl font-medium mb-4 inline-flex items-center gap-2">
+                    Favorit
                     <x-icon name="heart" class="w-5 h-5 fill-primary text-primary"/>
                 </h1>
 
