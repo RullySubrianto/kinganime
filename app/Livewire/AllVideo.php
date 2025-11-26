@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Post;
 use App\Models\UserPreference;
 use App\Models\Video;
 use Carbon\Carbon;
@@ -47,6 +46,9 @@ class AllVideo extends Component
     #[Validate('required|boolean')]
     public $colViewsCount = false;
 
+    #[Validate('required|boolean')]
+    public $colCategory = false;
+    
     // Initialilzing
     public function mount()
     {
@@ -55,6 +57,9 @@ class AllVideo extends Component
         
         // User data
         $user = Auth::user();
+
+        // Validate Admin
+        if ($user->role !== 'admin') abort(404);
 
         // Col Pref
         $colPref = $user->userPreferences
@@ -67,6 +72,7 @@ class AllVideo extends Component
             $this->colExternalLink = $colPref->value['colExternalLink'];
             $this->colStatus = $colPref->value['colStatus'];
             $this->colViewsCount = $colPref->value['colViewsCount'];
+            $this->colCategory = $colPref->value['colCategory'];
         }
 
     }
@@ -77,12 +83,16 @@ class AllVideo extends Component
         // User data
         $user = Auth::user();
 
+        // Validate Admin
+        if ($user->role !== 'admin') abort(404);
+
         // Validate input
         $validated = $this->validate([
             'colThumbnail' => 'required|boolean',
             'colExternalLink' => 'required|boolean',
             'colStatus' => 'required|boolean',
             'colViewsCount' => 'required|boolean',
+            'colCategory' => 'required|boolean',
         ]);
 
         // User preference
@@ -115,6 +125,9 @@ class AllVideo extends Component
         // User data
         $user = Auth::user();
 
+        // Validate Admin
+        if ($user->role !== 'admin') abort(404);
+
         // User preference
         $pref = UserPreference::where('user_id', '=', $user->id)
             ->where('key', 'table_column_all_video')
@@ -130,6 +143,7 @@ class AllVideo extends Component
         $this->colExternalLink = false;
         $this->colStatus = false;
         $this->colViewsCount = false;
+        $this->colCategory = false;
     }
 
     // Pagination view
@@ -176,6 +190,9 @@ class AllVideo extends Component
 
         // User data
         $user = Auth::user();
+
+        // Validate Admin
+        if ($user->role !== 'admin') abort(404);
         
         // Video data
         $videoToDelete = Video::whereIn('id', $this->bulkSelected)
@@ -201,11 +218,14 @@ class AllVideo extends Component
         // User data
         $user = Auth::user();
 
+        // Validate Admin
+        if ($user->role !== 'admin') abort(404);
+
         // Query builder
         $videos = Video::query();
 
         // Eager Load
-        // $video->with('user.companyUsers');
+        $videos->with('categories');
 
         // Search Video
         $videos->when($this->searchVideo, function ($query) {

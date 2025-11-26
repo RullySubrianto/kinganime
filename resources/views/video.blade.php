@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Video {{ $video->title }}">
     <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container py-6">

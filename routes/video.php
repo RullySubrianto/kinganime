@@ -29,7 +29,7 @@ Route::controller(VideoController::class)->group(function () {
         ->name('video.show');
 
     // Dedicated Category Page
-    Route::get('/category/{category}', 'category')
+    Route::get('/kategori/{category}', 'category')
         ->name('category.show');
 
     // Save Video button

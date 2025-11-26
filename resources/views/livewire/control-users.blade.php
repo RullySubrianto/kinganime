@@ -238,8 +238,10 @@
         </div>
     @endif
 
-    {{-- Video Table --}}
-    <div class="border-l border-r border-b overflow-x-auto w-full">
+    {{-- User Table --}}
+    <div 
+        x-data="{ showDelete: false, deleteId: null }"
+        class="border-l border-r border-b overflow-x-auto w-full">
         <table class="w-full table-auto whitespace-nowrap divide-y divide-gray-200 mb-0">
             <thead class="text-left font-semibold text-sm">
                 <tr class="[&>th]:px-4 [&>th]:py-3 divide-x divide-none">
@@ -309,22 +311,31 @@
                                     </div>
                                 </a> --}}
 
-                                {{-- Edit Button --}}
-                                {{-- <a href="{{ route('all-video.edit', $video->id) }}" class="ml-2">
-                                    <div class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                        </svg>
-                                        <p class="text-sm font-medium hover:underline">Edit</p>
-                                    </div>
-                                </a> --}}
+                                {{-- Block Button --}}
+                                @if ($user->isBlocked())
+                                    <a href="{{ route('users.unblock', $user->id) }}" class="ml-2">
+                                        <div class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
+                                            <x-icon name="plus" class="w-3.5 h-3.5"/>
+                                            <p class="text-sm font-medium hover:underline">Unblock</p>
+                                        </div>
+                                    </a>
+                                @else
+                                    <a href="{{ route('users.block', $user->id) }}" class="ml-2">
+                                        <div class="flex items-center gap-1 text-red-600 hover:text-red-800">
+                                            <x-icon name="block" class="w-3.5 h-3.5"/>
+                                            <p class="text-sm font-medium hover:underline">Block</p>
+                                        </div>
+                                    </a>
+                                @endif
 
                                 {{-- Delete Button --}}
-                                <button class="ml-2 cursor-pointer" form="all-user.destroy-{{ $user->id }}">
+                                <button 
+                                    type="button" 
+                                    @click="deleteId = {{ $user->id }}; showDelete = true"
+                                    class="ml-2 cursor-pointer"
+                                >
                                     <div class="flex items-center gap-1 text-red-600 hover:text-red-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                        </svg>
+                                        <x-icon name="trash" class="w-3.5 h-3.5"/>
                                         <p class="text-sm font-medium hover:underline">Delete</p>
                                     </div>
                                 </button>
@@ -357,6 +368,41 @@
                 @endforelse
             </tbody>
         </table>
+
+        {{-- Delete Modal --}}
+        <template x-if="showDelete">
+            <div 
+                class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-999"
+                x-transition.opacity
+                @click.self="showDelete = false"
+            >
+                <div 
+                    class="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
+                    x-transition.scale
+                >
+                    <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus User?</h2>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Apakah anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan.
+                    </p>
+
+                    <div class="flex justify-end gap-3">
+                        <button 
+                            @click="showDelete = false" 
+                            class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer"
+                        >
+                            Batal
+                        </button>
+
+                        <button 
+                            @click="document.getElementById(`all-user.destroy-${deleteId}`).submit()" 
+                            class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+                        >
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 
     {{-- Pagination --}}

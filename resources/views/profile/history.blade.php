@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="History">
     <section class="bg-gray-50 min-h-[calc(100dvh-130px)] py-6">
         {{-- Container --}}
         <div class="container mx-auto flex flex-col lg:flex-row gap-x-6">
@@ -11,11 +11,11 @@
 
             {{-- Content --}}
             <div class="flex-1">
-            {{-- Title --}}
-            <h1 class="text-2xl font-medium mb-4 inline-flex items-center gap-2">
-                History
-                <x-icon name="history" class="w-5 h-5"/>
-            </h1>
+                {{-- Title --}}
+                <h1 class="text-2xl font-medium mb-4 inline-flex items-center gap-2">
+                    History
+                    <x-icon name="history" class="w-5 h-5"/>
+                </h1>
 
                 {{-- Videos --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">

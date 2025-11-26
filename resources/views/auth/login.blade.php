@@ -46,15 +46,23 @@
                             tabindex="2"/>
                     </div>
 
-                    {{-- Submit Button --}}
-                    <x-ui.button
-                        type="submit"
-                        class="mt-2 w-full"
-                        tabindex="3">
-                        Masuk
-                    </x-ui.button>
+                    <div>
+                        @if ($errors->any())
+                            <ul class="mb-1">
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-sm font-medium my-1 text-red-600">{{ $error }}</li>  
+                                @endforeach    
+                            </ul>                
+                        @endif
+                        {{-- Submit Button --}}
+                        <x-ui.button
+                            type="submit"
+                            class="mt-2 w-full"
+                            tabindex="3">
+                            Masuk
+                        </x-ui.button>
+                    </div>
                 </div>
-
             </form>
         </div>
     </section>

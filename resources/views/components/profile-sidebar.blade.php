@@ -26,6 +26,18 @@
             'access'   => 'can:isAdmin',
         ],
         [
+            'route' => 'category.index',
+            'label' => 'Kategori',
+            'icon' => 'category',
+            'access'   => 'can:isAdmin',
+        ],
+        [
+            'route' => 'category.create',
+            'label' => 'Tambah Kategori',
+            'icon' => 'plus-circle',
+            'access'   => 'can:isAdmin',
+        ],
+        [
             'route' => 'saved-video.index',
             'label' => 'Favorit',
             'icon' => 'heart',

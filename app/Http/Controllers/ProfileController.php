@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ImageHelper;
+use App\Models\BlacklistedEmail;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Video;
@@ -13,11 +14,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    // Personal Information
     public function index()
     {
         return view('profile.index');
     }
 
+    // Update Personal Information
     public function updateProfile(Request $request)
     {
         // Validate Input
@@ -39,6 +42,7 @@ class ProfileController extends Controller
         return back()->with('success', 'Informasi Pribadi Berhasil Diubah.');
     }
 
+    // Update Password
     public function updatePassword(Request $request)
     {
         // Validate Input
@@ -65,9 +69,28 @@ class ProfileController extends Controller
         return back()->with('success', 'Password berhasil diubah.');
     }
 
+    // Control Users
     public function controlUsers()
     {
         return view('profile.control-users');
+    }
+
+    public function unblockControlUsers(User $user)
+    {
+        // Delete User Email in Blacklisted Email
+        BlacklistedEmail::where('email', $user->email)->delete();
+
+        return back()->with('success', "User batal diblokir.");
+    }
+
+    public function blockControlUsers(User $user)
+    {
+        // Add User Email to Blacklisted Email
+        BlacklistedEmail::firstOrCreate([
+            'email' => $user->email,
+        ]);
+
+        return back()->with('success', "User berhasil diblokir.");
     }
 
     // Destroy Users
@@ -79,11 +102,13 @@ class ProfileController extends Controller
         return back()->with('success', 'User berhasil dihapus');
     }
  
+    // All Video
     public function allVideo()
     {
         return view('profile.all-video');
     }
 
+    // Edit Video in All Video
     public function editVideoAllVideo(Video $video)
     {
         // Categories
@@ -95,14 +120,14 @@ class ProfileController extends Controller
         ]);
     }
 
+    // Update Video in All Video
     public function updateVideoAllVideo(Request $request, Video $video)
     {
-        // dd($request->all());
         // Validate Input
         $validated = $request->validate([
             'title' => 'required|string',
             'external_link' => 'required|string', 
-            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480|dimensions:ratio=25/14',
+            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:20480|dimensions:ratio=25/14',
             'status' => 'required|in:published,draft',
         ]);
         
@@ -130,6 +155,9 @@ class ProfileController extends Controller
             
             // Save Model
             $video->save();
+        } else {
+            $video->thumbnail = $oldThumbnail;
+            $video->save();
         }
 
         // Update Category in Pivot Table
@@ -139,18 +167,69 @@ class ProfileController extends Controller
         return redirect()->route('all-video.index')->with('success', 'Video berhasil diubah.');
     }
 
+    // Destroy Video in All Video
     public function destroyVideoAllVideo(Video $video)
     {
-        // Delete thumbnail
+        // Delete Thumbnail
         $video->company_logo && Storage::disk('public')->delete('uploads/thumbnail/' . $video->thumbnail);
 
-        // Delete video
+        // Delete Video
         $video->delete();
 
         // Return
         return back()->with('success', 'Video berhasil dihapus.');
     }
 
+    // Category
+    public function indexCategory()
+    {
+        return view('profile.category');
+    }
+
+    public function destroyCategory(Category $category)
+    {
+        // Delete Category
+        $category->delete();
+
+        // Return
+        return back()->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    public function createCategory()
+    {
+        // Videos
+        $videos = Video::latest()->get(['id', 'title']);
+
+        // Return
+        return view('profile.add-category', [
+            'videos' => $videos,
+        ]);
+    }
+
+    public function storeCategory(Request $request)
+    {
+        // Validate Input
+        $validated = $request->validate([
+            'name' => 'required|string|unique:categories,name',
+        ]);
+        
+        // Validate Category
+        $request->validate([
+            'videos' => 'required|array',
+            'videos.*' => 'integer|exists:videos,id',
+        ]);
+
+        // Create Category
+        $category = Category::create($validated);
+
+        // Update Category in Pivot Table
+        $category->videos()->sync($request->videos);
+
+        // Return Back
+        return back()->with('success','Kategori baru berhasil dibuat.');
+    }
+
+    // Saved Video
     public function savedVideo()
     {
         // User Data
@@ -168,6 +247,7 @@ class ProfileController extends Controller
         ]);
     }
 
+    // History
     public function history()
     {
         // User Data
@@ -187,6 +267,7 @@ class ProfileController extends Controller
         ]);
     }
 
+    // History for Guest
     public function historyGuest(Request $request)
     {
         // Validate Videos Ids

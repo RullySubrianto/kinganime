@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Beranda">
     <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container space-y-6 py-6">

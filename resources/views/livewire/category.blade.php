@@ -139,32 +139,17 @@
                             <form wire:submit.prevent="saveColPref" class="mt-3 flex flex-col gap-3">
                                 <label class="flex items-center gap-2 text-sm">
                                     <input disabled checked type="checkbox" />
-                                    Judul
+                                    Nama
                                 </label>
 
                                 <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input wire:model="colThumbnail" type="checkbox" class="cursor-pointer"/>
-                                    Thumbnail
+                                    <input wire:model="colTotalVideo" type="checkbox" class="cursor-pointer"/>
+                                    Total Video
                                 </label>
 
                                 <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input wire:model="colExternalLink" type="checkbox" class="cursor-pointer"/>
-                                    Link Eksternal
-                                </label>
-
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input wire:model="colStatus" type="checkbox" class="cursor-pointer"/>
-                                    Status
-                                </label>
-
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input wire:model="colViewsCount" type="checkbox" class="cursor-pointer"/>
-                                    Viewers
-                                </label>
-
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input wire:model="colCategory" type="checkbox" class="cursor-pointer"/>
-                                    Kategori
+                                    <input wire:model="colVideos" type="checkbox" class="cursor-pointer"/>
+                                    Video
                                 </label>
 
                                 <label class="flex items-center gap-2 text-sm">
@@ -193,7 +178,7 @@
                         name="searchVideo"
                         autocomplete="searchVideo"
                         placeholder="Cari Video..."
-                        wire:model.live.debounce.500ms="searchVideo"/>
+                        wire:model.live.debounce.500ms="searchCategory"/>
                     <button
                         type="button"
                         class="absolute right-4 top-1 rounded-full p-1.5 bg-primary cursor-pointer">
@@ -207,7 +192,7 @@
     {{-- Records Selected --}}
     @if (count($bulkSelected) > 0)
         <div class="bg-transparent border-l border-r border-b py-2 px-4 flex items-center justify-between">
-            <p class="text-sm font-semibold text-gray-700">{{ count($bulkSelected) }} videos selected</p>
+            <p class="text-sm font-semibold text-gray-700">{{ count($bulkSelected) }} categories selected</p>
 
             {{-- Delete Button --}}
             <button
@@ -258,7 +243,7 @@
         </div>
     @endif
 
-    {{-- Video Table --}}
+    {{-- Category Table --}}
     <div 
         x-data="{ showDelete: false, deleteId: null }"
         class="border-l border-r border-b overflow-x-auto w-full">
@@ -266,26 +251,14 @@
             <thead class="text-left font-semibold text-sm">
                 <tr class="[&>th]:px-4 [&>th]:py-3 divide-x divide-none">
                     <th class="bg-transparent pl-4 py-3"></th>
-                    <th class="bg-transparent py-3 whitespace-nowrap">Judul</th>
+                    <th class="bg-transparent py-3 whitespace-nowrap">Nama</th>
 
-                    @if ($colPref && $colPref->value['colThumbnail'])
-                        <th class="bg-transparent py-3 whitespace-nowrap">Thumbnail</th>
+                    @if ($colPref && $colPref->value['colTotalVideo'])
+                        <th class="bg-transparent py-3 whitespace-nowrap">Total Video</th>
                     @endif
 
-                    @if ($colPref && $colPref->value['colExternalLink'])
-                        <th class="bg-transparent py-3 whitespace-nowrap">Link Eksternal</th>
-                    @endif
-
-                    @if ($colPref && $colPref->value['colStatus'])
-                        <th class="bg-transparent py-3 whitespace-nowrap">Status</th>
-                    @endif
-
-                    @if ($colPref && $colPref->value['colViewsCount'])
-                        <th class="bg-transparent py-3 whitespace-nowrap">Viewers</th>
-                    @endif
-
-                    @if ($colPref && $colPref->value['colCategory'])
-                        <th class="bg-transparent py-3 whitespace-nowrap">Kategori</th>
+                    @if ($colPref && $colPref->value['colVideos'])
+                        <th class="bg-transparent py-3 whitespace-nowrap">Video</th>
                     @endif
 
                     <th class="bg-transparent py-3 whitespace-nowrap">Tanggal Dibuat</th>
@@ -294,12 +267,12 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-100">
-                @forelse($videos as $video)
+                @forelse($categories as $category)
                     <tr 
-                        wire:key="{{ $video->id }}" 
+                        wire:key="{{ $category->id }}" 
                         @class([
                             "[&>td]:px-4 [&>td]:py-3 divide-x divide-none",
-                            "bg-blue-50" => in_array($video->id, $bulkSelected),
+                            "bg-blue-50" => in_array($category->id, $bulkSelected),
                         ])>
                         {{-- Select --}}
                         <td class="pl-4 py-3">
@@ -307,64 +280,30 @@
                                 type="checkbox"
                                 name="selectVideo"
                                 class="border border-gray-500 border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
-                                value="{{ $video->id }}"
+                                value="{{ $category->id }}"
                                 wire:model.live="bulkSelected">
                         </td>
 
-                        {{-- Title --}}
+                        {{-- Name --}}
                         <td class="py-3 whitespace-nowrap">
-                            <p class="text-sm font-normal text-gray-800">{{ $video->title }}</p>
+                            <p class="text-sm font-normal text-gray-800">{{ $category->name }}</p>
                         </td>
 
-                        {{-- Thumbnail --}}
-                        @if ($colPref && $colPref->value['colThumbnail'])
+                        {{-- Total Video --}}
+                        @if ($colPref && $colPref->value['colTotalVideo'])
                             <td class="py-3 whitespace-nowrap">
-                                <img 
-                                    src="{{ $video->thumbnail }}"
-                                    alt="Thumbnail"
-                                    class="w-20 aspect-video rounded-md object-cover bg-gray-100">
-                            </td>
-                        @endif
-
-                        {{-- External Link --}}
-                        @if ($colPref && $colPref->value['colExternalLink'])
-                            <td class="py-3 whitespace-nowrap">
-                                <a href="{{ $video->external_link }}" class="text-sm font-normal text-blue-500 hover:underline">{{ $video->external_link }}</a>
-                            </td>
-                        @endif
-
-                        {{-- Status --}}
-                        @if ($colPref && $colPref->value['colStatus'])
-                            <td class="py-3 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    @if ($video->status === 'published')
-                                        <div class="bg-green-50 py-1 px-2 rounded-md">
-                                            <p class="text-xs font-medium" style="color: #16a34a;">Jadi Duit</p>
-                                        </div>
-                                    @elseif ($video->status === 'draft')
-                                        <div class="bg-blue-50 py-1 px-2 rounded-md">
-                                            <p class="text-xs font-medium" style="color: #0669d9;">Draf</p>
-                                        </div>
-                                    @endif
-                                </div>
-                            </td>
-                        @endif
-
-                        {{-- Views Count --}}
-                        @if ($colPref && $colPref->value['colViewsCount'])
-                            <td class="py-3 whitespace-nowrap">
-                                <p class="text-sm font-normal text-gray-800">{{ \Illuminate\Support\Number::abbreviate($video->views_count) }} Views</p>
+                                <p class="text-sm font-normal text-gray-800">{{ $category->videos->count() }}</p>
                             </td>
                         @endif
 
                         {{-- Category --}}
-                        @if ($colPref && $colPref->value['colCategory'])
+                        @if ($colPref && $colPref->value['colVideos'])
                             <td class="py-3 whitespace-nowrap">
-                                @foreach ($video->categories as $videoCategory)
+                                @foreach ($category->videos as $categoryVideo)
                                     <a 
-                                        href="{{ route('category.show', $videoCategory->id) }}" 
+                                        href="{{ route('video.show', $categoryVideo->id) }}" 
                                         class="text-sm font-normal text-blue-500 hover:underline">
-                                        {{ $videoCategory->name }}
+                                        {{ $categoryVideo->title }}
                                     </p>
                                 @endforeach
                             </td>
@@ -372,14 +311,14 @@
 
                         {{-- Created at --}}
                         <td class="py-3 whitespace-nowrap">
-                            <p class="text-sm font-normal text-gray-800">{{ \Carbon\Carbon::parse($video->created_at)->format('d F Y') }}</p>
+                            <p class="text-sm font-normal text-gray-800">{{ \Carbon\Carbon::parse($category->created_at)->format('d F Y') }}</p>
                         </td>
 
                         {{-- View, Edit & Delete Button --}}
                         <td class="pr-4 py-3 whitespace-nowrap">
                             <div class="flex items-center gap-2">
                                 {{-- View Button --}}
-                                <a href="{{ route('video.show', $video->id) }}" class="text-secondary p-0 border-0">
+                                <a href="{{ route('category.show', $category->id) }}" class="text-secondary p-0 border-0">
                                     <div class="flex items-center gap-1 text-gray-500 hover:text-gray-700">
                                         <x-icon name="eye" class="w-3.5 h-3.5"/>
                                         <p class="text-sm font-medium hover:underline">View</p>
@@ -387,7 +326,7 @@
                                 </a>
 
                                 {{-- Edit Button --}}
-                                <a href="{{ route('all-video.edit', $video->id) }}" class="ml-2">
+                                <a href="{{ route('category.edit', $category->id) }}" class="ml-2">
                                     <div class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
                                         <x-icon name="pen" class="w-3 h-3"/>
                                         <p class="text-sm font-medium hover:underline">Edit</p>
@@ -397,7 +336,7 @@
                                 {{-- Delete Button --}}
                                 <button 
                                     type="button" 
-                                    @click="deleteId = {{ $video->id }}; showDelete = true"
+                                    @click="deleteId = {{ $category->id }}; showDelete = true"
                                     class="ml-2 cursor-pointer"
                                 >
                                     <div class="flex items-center gap-1 text-red-600 hover:text-red-800">
@@ -406,7 +345,12 @@
                                     </div>
                                 </button>
 
-                                <form id="all-video.destroy-{{ $video->id }}" action="{{ route('all-video.destroy', $video->id) }}" method="POST" class="hidden">
+
+                                <form 
+                                    id="category.destroy-{{ $category->id }}" 
+                                    action="{{ route('category.destroy', $category->id) }}" 
+                                    method="POST" 
+                                    class="hidden">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -427,7 +371,7 @@
                                             l2.647-2.646a.5.5 0 0 0-.708-.708L8
                                             7.293z"/>
                                 </svg>
-                                <p class="mt-2 mb-0 text-black">Video tidak ditemukan.</p>
+                                <p class="mt-2 mb-0 text-black">Kategori tidak ditemukan.</p>
                             </div>
                         </td>
                     </tr>
@@ -446,9 +390,9 @@
                     class="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
                     x-transition.scale
                 >
-                    <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Video?</h2>
+                    <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kategori?</h2>
                     <p class="text-sm text-gray-600 mb-6">
-                        Apakah anda yakin ingin menghapus video ini? Tindakan ini tidak dapat dibatalkan.
+                        Apakah anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.
                     </p>
 
                     <div class="flex justify-end gap-3">
@@ -460,7 +404,7 @@
                         </button>
 
                         <button 
-                            @click="document.getElementById(`all-video.destroy-${deleteId}`).submit()" 
+                            @click="document.getElementById(`category.destroy-${deleteId}`).submit()" 
                             class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
                         >
                             Hapus
@@ -472,5 +416,5 @@
     </div>
 
     {{-- Pagination --}}
-    {{ $videos->links(data: ['scrollTo' => false]) }}
+    {{ $categories->links(data: ['scrollTo' => false]) }}
 </div>

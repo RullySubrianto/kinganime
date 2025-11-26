@@ -13,6 +13,7 @@ class VideoController extends Controller
 {
     use AuthorizesRequests;
 
+    // Homepage
     public function home()
     {
         // Videos
@@ -30,6 +31,7 @@ class VideoController extends Controller
         ]);
     }
 
+    // Search Video
     public function searchVideo(Request $request)
     {
         // Validate Input
@@ -65,6 +67,7 @@ class VideoController extends Controller
         ]);
     }
 
+    // Post Video in Profile
     public function postVideo()
     {
         // Categories
@@ -75,6 +78,7 @@ class VideoController extends Controller
         ]);
     }
 
+    // Store Video
     public function storeVideo(Request $request)
     {
         // Validate Input
@@ -115,6 +119,7 @@ class VideoController extends Controller
         return back()->with('success','Video Berhasil Dipost.');
     }
 
+    // Dedicated Video
     public function show(Video $video)
     {
         // Authorize
@@ -152,6 +157,7 @@ class VideoController extends Controller
         ]);
     }
 
+    // Category
     public function category(Category $category)
     {
         // Videos
@@ -167,6 +173,7 @@ class VideoController extends Controller
         ]);
     }
 
+    // Save Video
     public function saveVideo(Video $video)
     {
         // Authorize
@@ -190,6 +197,7 @@ class VideoController extends Controller
         return back()->with('success', $flashMessage);
     }
 
+    // Save to Watchlist
     public function saveVideoToWatchlist(Video $video)
     {
         // Authorize

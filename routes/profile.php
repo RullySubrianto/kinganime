@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Auth
 Route::middleware('auth')->controller(ProfileController::class)->group(function () {
     Route::prefix('profile')
         ->name('profile.')
@@ -29,14 +30,14 @@ Route::middleware('auth')->controller(ProfileController::class)->group(function 
             Route::get('/', 'controlUsers')
                 ->name('index');
 
-            // Display Edit Page
-            Route::get('/{user}', 'editControlUsers')
-                ->name('edit');
-        
-            // Update User
-            Route::put('/{user}', 'updateControlUsers')
-                ->name('update');
-        
+            // Unblock User
+            Route::get('/unblock/{user}', 'unblockControlUsers')
+                ->name('unblock');
+
+            // Block User
+            Route::get('/block/{user}', 'blockControlUsers')
+                ->name('block');
+
             // Delete User
             Route::delete('/{user}', 'destroyControlUsers')
                 ->name('destroy');
@@ -64,12 +65,44 @@ Route::middleware('auth')->controller(ProfileController::class)->group(function 
                 ->name('destroy');
     });
 
+    // Category Page - Admin
+    Route::middleware('can:isAdmin')
+        ->prefix('kategori')
+        ->name('category.')
+        ->group(function () {
+            // Display All Video Page
+            Route::get('/', 'indexCategory')
+                ->name('index');
+
+            // Display Edit Page
+            Route::get('/edit/{category}', 'editCategory')
+                ->name('edit');
+
+            // Update Video
+            Route::put('/{category}', 'updateCategory')
+                ->name('update');
+        
+            // Delete Video
+            Route::delete('/{category}', 'destroyCategory')
+                ->name('destroy');
+
+            // Show Create Category Page
+            Route::get('/create', 'createCategory')
+                ->name('create');
+        
+            // Store Category
+            Route::post('/', 'storeCategory')
+                ->name('store');
+    });
+
+
     // Saved Video Page
     Route::get('/video-tersimpan', 'savedVideo')
         ->name('saved-video.index');
 
 });
 
+// Guest
 Route::controller(ProfileController::class)->group(function () {
     // History Page
     Route::get('/history', 'history')

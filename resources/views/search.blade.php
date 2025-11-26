@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Cari Video">
     <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container space-y-6 py-6">
@@ -23,7 +23,7 @@
 
                 <div class="flex flex-row justify-between items-center mt-4 flex-wrap gap-y-4">
                     @if ($search)
-                        <p class="text-sm">Ditemukan <strong>{{ $videos->count() }}</strong> hasil untuk <strong>"{{ $search }}"</strong></p>
+                        <p class="text-sm">Ditemukan <strong>{{ $videos->total() }}</strong> hasil untuk <strong>"{{ $search }}"</strong></p>
                     @else
                         <div></div>
                     @endif

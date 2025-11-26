@@ -72,4 +72,10 @@ class User extends Authenticatable
             ->withTimestamps()
             ->orderByPivot('updated_at', 'desc');
     }
+
+    // Helper
+    public function isBlocked()
+    {
+        return BlacklistedEmail::where('email', $this->email)->exists();
+    }
 }

@@ -2,21 +2,22 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
+use App\Models\Category as ModelsCategory;
 use App\Models\UserPreference;
+use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Validate;
 
-class ControlUsers extends Component
+class Category extends Component
 {
     use WithPagination;
 
     // Search bar
     #[Validate('nullable|string')]
-    public $searchUser = '';
+    public $searchCategory = '';
 
     // Per Page
     #[Validate('nullable|integer')]
@@ -35,11 +36,14 @@ class ControlUsers extends Component
 
     // Update Column Preference Property
     #[Validate('required|boolean')]
-    public $colEmail =  false;
+    public $colTotalVideo =  false;
+    
+    #[Validate('required|boolean')]
+    public $colVideos =  false;
 
     #[Validate('required|boolean')]
-    public $colCreatedAt =  false;
-
+    public $colCreatedAt  = false;
+    
     // Initialilzing
     public function mount()
     {
@@ -54,12 +58,13 @@ class ControlUsers extends Component
 
         // Col Pref
         $colPref = $user->userPreferences
-            ->where('key', 'table_column_control_users')
+            ->where('key', 'table_column_category')
             ->first();
 
         // Update Checkbox
         if ($colPref) {
-            $this->colEmail = $colPref->value['colEmail'];
+            $this->colTotalVideo = $colPref->value['colTotalVideo'];
+            $this->colVideos = $colPref->value['colVideos'];
             $this->colCreatedAt = $colPref->value['colCreatedAt'];
         }
 
@@ -76,13 +81,14 @@ class ControlUsers extends Component
 
         // Validate input
         $validated = $this->validate([
-            'colEmail' => 'required|boolean',
+            'colTotalVideo' => 'required|boolean',
+            'colVideos' => 'required|boolean',
             'colCreatedAt' => 'required|boolean',
         ]);
 
         // User preference
         $pref = UserPreference::where('user_id', '=', $user->id)
-            ->where('key', 'table_column_control_users')
+            ->where('key', 'table_column_category')
             ->first();
         
         if ($pref) {
@@ -95,7 +101,7 @@ class ControlUsers extends Component
             // Create record
             UserPreference::create([
                 'user_id' => $user->id,
-                'key' => 'table_column_control_users',
+                'key' => 'table_column_category',
                 'value' => $validated
             ]);
         }
@@ -106,7 +112,7 @@ class ControlUsers extends Component
     {
         // Validate property
         $this->validate();
-
+        
         // User data
         $user = Auth::user();
 
@@ -115,7 +121,7 @@ class ControlUsers extends Component
 
         // User preference
         $pref = UserPreference::where('user_id', '=', $user->id)
-            ->where('key', 'table_column_control_users')
+            ->where('key', 'table_column_category')
             ->first();
         
         if ($pref) {
@@ -124,7 +130,8 @@ class ControlUsers extends Component
         }
 
         // Update Checkbox
-        $this->colEmail = false;
+        $this->colTotalVideo = false;
+        $this->colVideos = false;
         $this->colCreatedAt = false;
     }
 
@@ -176,20 +183,21 @@ class ControlUsers extends Component
         // Validate Admin
         if ($user->role !== 'admin') abort(404);
         
-        // Users in bulk selected
-        $usersToDelete = User::whereIn('id', $this->bulkSelected)
+        // Video data
+        $categoriesToDelete = ModelsCategory::whereIn('id', $this->bulkSelected)
             ->pluck('id');
 
-        if ($usersToDelete->isNotEmpty() && $user->id === 1) {
-            // Delete user
-            User::destroy($usersToDelete);
+        if ($categoriesToDelete->isNotEmpty() && $user->role === 'admin') {
+            // Delete Video
+            ModelsCategory::destroy($categoriesToDelete);
         }
 
-        // Reset selected user
+        // Reset selected video
         $this->bulkSelected = [];
 
-        session()->flash('success', 'User berhasil dihapus.');
+        session()->flash('success', 'Kategori berhasil dihapus.');
     }
+
 
     public function render()
     {
@@ -203,39 +211,39 @@ class ControlUsers extends Component
         if ($user->role !== 'admin') abort(404);
 
         // Query builder
-        $users = User::query();
+        $categories = ModelsCategory::query();
 
-        // Search User
-        $users->when($this->searchUser, function ($query) {
-            return $query->where('name', 'like', '%' . $this->searchUser . '%')
-                            ->where('id', '!=', '1')
-                            ->orWhere('email', 'like', '%' . $this->searchUser . '%');
+        // Eager Load
+        $categories->with('videos');
+
+        // Search Video
+        $categories->when($this->searchCategory, function ($query) {
+            return $query->where('name', 'like', '%' . $this->searchCategory . '%');
         });
 
         // Created From
-        $users->when($this->createdFrom, function ($query) {
+        $categories->when($this->createdFrom, function ($query) {
             return $query->where('created_at', '>=', Carbon::parse($this->createdFrom));
         });
 
         // Created Until
-        $users->when($this->createdUntil, function ($query) {
+        $categories->when($this->createdUntil, function ($query) {
             return $query->where('created_at', '<=', Carbon::parse($this->createdUntil)->endOfDay());
         });
 
         // Run the query and get results
-        $users = $users->where('id', '!=', '1')
-            ->latest()
+        $categories = $categories->latest()
             ->paginate($this->page)
             ->onEachSide(1);
 
         // Column Preference Data
         $colPref = $user->userPreferences
-            ->where('key', 'table_column_control_users')
+            ->where('key', 'table_column_category')
             ->first();
 
-        return view('livewire.control-users', [
+        return view('livewire.category', [
+            'categories' => $categories,
             'user' => $user,
-            'users' => $users,
             'colPref' => $colPref
         ]);
     }

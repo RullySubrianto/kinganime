@@ -4,7 +4,7 @@
             {{-- Title --}}
             <div class="flex flex-col items-center gap-4">
                 <div class="space-y-2 text-center">
-                    <h1 class="text-xl font-semibold">Pilih Metode Daftar</h1>
+                    <h1 class="text-xl font-semibold">Daftar Akun Baru</h1>
                 </div>
             </div>
 
@@ -17,18 +17,20 @@
                 <div class="grid gap-6">
                     {{-- Name --}}
                     <div class="grid gap-2">
-                        <x-ui.label for="name" :required="true">Nama</x-ui.label>
+                        <x-ui.label for="name" :required="true">Username</x-ui.label>
 
                         <x-ui.input
                             type="text"
-                            id="name"
-                            name="name"
-                            value="{{ old('name') }}"
+                            id="username"
+                            name="username"
+                            value="{{ old('username') }}"
                             required
                             class="bg-white!"
                             placeholder="Nama"
-                            autocomplete="name"
+                            autocomplete="username"
                             tabindex="1"/>
+
+                        <x-error-inline-input :value="'username'"/>
                     </div>
 
                     {{-- Email --}}
@@ -45,6 +47,8 @@
                             placeholder="john@gmail.com"
                             autocomplete="email"
                             tabindex="2"/>
+
+                        <x-error-inline-input :value="'email'"/>
                     </div>
 
                     {{-- Password --}}
@@ -60,6 +64,8 @@
                             placeholder="Password"
                             autocomplete="password"
                             tabindex="3"/>
+                        
+                        <x-error-inline-input :value="'password'"/>
                     </div>
 
                     {{-- Password Confirmation --}}
@@ -75,6 +81,8 @@
                             placeholder="Konfirmasi Password"
                             autocomplete="password"
                             tabindex="4"/>
+                        
+                        <x-error-inline-input :value="'password_confirmation'"/>
                     </div>
 
                     {{-- Submit Button --}}
