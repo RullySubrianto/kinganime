@@ -11,7 +11,17 @@
             <form 
                 action={{ route('login.store') }} 
                 method="POST"
-                class="flex flex-col gap-6">
+                class="flex flex-col gap-6"
+                x-data="{
+                    email: '',
+                    password: '',
+                    get ready() {
+                        return (
+                            this.email.trim().length > 0 &&
+                            this.password.trim().length >= 8
+                        );
+                    }
+                }">
                 @csrf
 
                 <div class="grid gap-6">
@@ -28,7 +38,8 @@
                             class="bg-white!"
                             placeholder="john@gmail.com"
                             autocomplete="email"
-                            tabindex="1"/>
+                            tabindex="1"
+                            x-model="email"/>
                     </div>
 
                     {{-- Password --}}
@@ -43,7 +54,8 @@
                             class="bg-white!"
                             placeholder="Password"
                             autocomplete="password"
-                            tabindex="2"/>
+                            tabindex="2"
+                            x-model="password"/>
                     </div>
 
                     <div>
@@ -58,7 +70,9 @@
                         <x-ui.button
                             type="submit"
                             class="mt-2 w-full"
-                            tabindex="3">
+                            tabindex="3"
+                            x-bind:disabled="!ready"
+                            x-bind:class="!ready ? 'opacity-50 cursor-not-allowed' : ''">
                             Masuk
                         </x-ui.button>
                     </div>
