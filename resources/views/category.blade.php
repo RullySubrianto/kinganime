@@ -1,5 +1,5 @@
 <x-layouts.app title="Video {{ $category->name }}">
-    <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
+    <section class="flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container py-6">
             {{-- Title --}}

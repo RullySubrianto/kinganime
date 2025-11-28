@@ -54,7 +54,9 @@ class VideoController extends Controller
         });
 
         // Run the query and get results
-        $videos = $videos->latest()
+        $videos = $videos
+            ->where('status', 'published')
+            ->latest()
             ->paginate(12, ['id', 'title', 'thumbnail', 'views_count'])
             ->appends($request->query())
             ->onEachSide(1);

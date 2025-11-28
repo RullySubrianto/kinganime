@@ -1,7 +1,14 @@
 @props(['contentClass' => '', 'title' => null])
 
 <!DOCTYPE html>
-<html lang="en">
+<html 
+    lang="en" 
+    x-data="{ 
+        dark: localStorage.getItem('dark') 
+            ? localStorage.getItem('dark') === 'true' 
+            : true  // default = dark
+    }"
+    x-bind:class="dark ? 'dark' : ''">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +22,7 @@
         <x-header />
 
         {{-- Content --}}
-        <div class="flex flex-1 flex-col font-rubik {{ $contentClass }}">
+        <div class="flex flex-1 flex-col font-rubik bg-gray-50 dark:bg-background {{ $contentClass }}">
             {{ $slot }}
         </div>
 
@@ -26,6 +33,7 @@
     {{-- Required for Alpine to work anywhere --}}
     @livewireScripts
 
+    {{-- Flash Message --}}
     @if (session('success') || session('error'))
         <div 
             x-data="{ show: true }" 
@@ -59,6 +67,5 @@
             </div>
         </div>
     @endif
-
 </body>
 </html>

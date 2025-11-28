@@ -3,7 +3,7 @@
     {{-- <x-profile.success-and-error-flash-message /> --}}
 
     {{-- Search Bar, Bulk Actions --}}
-    <div class="bg-white border rounded-t-xl py-3 pl-4 pr-3">
+    <div class="bg-white dark:bg-neutral-900 border dark:border-neutral-700 rounded-t-xl py-3 pl-4 pr-3">
         {{-- Bulk Actions, Columns, Filters, Search Bar --}}
         <div class="flex justify-between items-center">
             {{-- Bulk Actions --}}
@@ -13,24 +13,24 @@
                         type="button"
                         @click="open = !open"
                         @click.outside="open = false"
-                        class="flex items-center border rounded-lg py-2 px-3 bg-gray-100 hover:bg-gray-200 text-sm gap-2"
+                        class="flex items-center border dark:border-neutral-700 rounded-lg py-2 px-3 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 text-sm gap-2"
                         aria-haspopup="true"
                         :aria-expanded="open ? 'true' : 'false'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-gray-600" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-gray-600 dark:text-white" viewBox="0 0 16 16">
                             <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                         </svg>
-                        <p class="text-sm font-semibold text-gray-700">Bulk actions</p>
+                        <p class="text-sm font-semibold text-gray-700 dark:text-white">Bulk actions</p>
                     </button>
 
                     <div
                         x-show="open"
                         x-transition
-                        class="absolute left-0 mt-2 bg-white rounded-lg shadow-md border w-52 py-1 z-50"
+                        class="absolute left-0 mt-2 bg-white hover:bg-gray-50 dark:bg-neutral-900 dark:hover:bg-neutral-700 rounded-lg shadow-md border w-52 py-1 z-5"
                         x-cloak>
                         <button
                             type="button"
                             wire:click="deleteSelected"
-                            class="w-full text-left text-red-600 flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-gray-50 cursor-pointer"
+                            class="w-full text-left text-red-600 flex items-center gap-2 px-3 py-2 text-sm font-medium cursor-pointer"
                             style="width: 200px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 0 16 16">
                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
@@ -54,7 +54,7 @@
                         {{-- Button --}}
                         <button
                             @click.stop="open = open === 'filters' ? null : 'filters'"
-                            class="text-gray-500 p-1 hover:text-gray-800 relative"
+                            class="text-gray-500 dark:text-gray-300 p-1 hover:text-gray-800 dark:hover:text-white relative"
                             aria-haspopup="true"
                             :aria-expanded="open === 'filters'">
 
@@ -75,7 +75,7 @@
                             x-show="open === 'filters'"
                             x-transition
                             @click.stop
-                            class="absolute right-0 mt-2 bg-white shadow-lg border rounded-lg p-4 w-72 z-50"
+                            class="absolute right-0 mt-2 bg-white dark:bg-neutral-900 shadow-lg border dark:border-neutral-700 rounded-lg p-4 w-72 z-50"
                             style="display:none;">
                             
                             <form action="" method="POST" class="space-y-3">
@@ -100,7 +100,7 @@
                                 <button
                                     type="button"
                                     @click="open = null; $wire.$refresh()"
-                                    class="w-full bg-blue-600 text-white py-2 rounded-md text-sm font-semibold hover:bg-blue-700 cursor-pointer">
+                                    class="w-full bg-primary text-white py-2 rounded-md text-sm font-semibold hover:bg-primary/90 cursor-pointer">
                                     Apply filters
                                 </button>
                             </form>
@@ -128,7 +128,7 @@
                             x-transition
                             x-cloak
                             @click.stop
-                            class="absolute right-0 mt-2 bg-white shadow-lg border rounded-lg p-4 w-72 z-50"
+                            class="absolute right-0 mt-2 bg-white dark:bg-neutral-900 shadow-lg border dark:border-neutral-700 rounded-lg p-4 w-72 z-50"
                             style="display:none;">
                             
                             <div class="flex justify-between items-center">
@@ -137,22 +137,22 @@
                             </div>
 
                             <form wire:submit.prevent="saveColPref" class="mt-3 flex flex-col gap-3">
-                                <label class="flex items-center gap-2 text-sm">
+                                <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                                     <input disabled checked type="checkbox" />
                                     Nama
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
                                     <input wire:model="colTotalVideo" type="checkbox" class="cursor-pointer"/>
                                     Total Video
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
                                     <input wire:model="colVideos" type="checkbox" class="cursor-pointer"/>
                                     Video
                                 </label>
 
-                                <label class="flex items-center gap-2 text-sm">
+                                <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                                     <input disabled checked type="checkbox" />
                                     Tanggal Dibuat
                                 </label>
@@ -161,7 +161,7 @@
                                 <button
                                     type="submit"
                                     @click="open = null"
-                                    class="mt-2 w-full bg-blue-600 text-white py-2 rounded-md text-sm font-semibold hover:bg-blue-700 cursor-pointer">
+                                    class="mt-2 w-full bg-primary text-white py-2 rounded-md text-sm font-semibold hover:bg-primary/90 cursor-pointer">
                                     Apply columns
                                 </button>
                             </form>
@@ -173,7 +173,7 @@
                 <div class="px-2 relative">
                     <x-ui.input 
                         type="text"
-                        class="py-1.5 ps-4 text-sm rounded-lg shadow-none! border"
+                        class="py-1.5 ps-4 text-sm rounded-lg shadow-none! border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200"
                         id="searchVideo"
                         name="searchVideo"
                         autocomplete="searchVideo"
@@ -191,8 +191,8 @@
 
     {{-- Records Selected --}}
     @if (count($bulkSelected) > 0)
-        <div class="bg-transparent border-l border-r border-b py-2 px-4 flex items-center justify-between">
-            <p class="text-sm font-semibold text-gray-700">{{ count($bulkSelected) }} categories selected</p>
+        <div class="bg-transparent dark:bg-neutral-900 border-l border-r border-b dark:border-neutral-700 py-2 px-4 flex items-center justify-between">
+            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ count($bulkSelected) }} categories selected</p>
 
             {{-- Delete Button --}}
             <button
@@ -206,16 +206,16 @@
 
     {{-- Active Filters --}}
     @if ($createdFrom || $createdUntil)
-        <div class="bg-transparent border-l border-r border-b py-2 px-4 flex items-center">
-            <p class="text-sm font-semibold text-gray-700">Active filters</p>
+        <div class="bg-transparent border-l border-r border-b dark:border-neutral-700 py-2 px-4 flex items-center">
+            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Active filters : </p>
 
             @if ($createdFrom)
-                <div class="bg-blue-50 px-2 flex items-center ml-3 rounded-md">
-                    <p class="text-xs font-medium text-blue-700 flex items-center gap-2">
+                <div class="bg-purple-50 dark:bg-neutral-900 px-2 flex items-center ml-3 rounded-md">
+                    <p class="text-xs font-medium text-primary dark:text-white flex items-center gap-2">
                         Created from {{ \Carbon\Carbon::parse($createdFrom)->format('d F Y') }}
                         <button
                             type="button"
-                            class="p-1 border-0 text-blue-700 cursor-pointer"
+                            class="p-1 border-0 text-primary dark:text-white cursor-pointer"
                             wire:click="resetFliters('createdFrom')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 2 16 16">
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -226,12 +226,12 @@
             @endif
 
             @if ($createdUntil)
-                <div class="bg-blue-50 px-2 flex items-center ml-3 rounded-md">
-                    <p class="text-xs font-medium text-blue-700 flex items-center gap-2">
+                <div class="bg-purple-50 dark:bg-neutral-900 px-2 flex items-center ml-3 rounded-md">
+                    <p class="text-xs font-medium text-primary dark:text-white flex items-center gap-2">
                         Created until {{ \Carbon\Carbon::parse($createdUntil)->format('d F Y') }}
                         <button
                             type="button"
-                            class="p-1 border-0 text-blue-700 cursor-pointer"
+                            class="p-1 border-0 text-primary dark:text-white cursor-pointer"
                             wire:click="resetFliters('createdUntil')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 2 16 16">
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -246,9 +246,9 @@
     {{-- Category Table --}}
     <div 
         x-data="{ showDelete: false, deleteId: null }"
-        class="border-l border-r border-b overflow-x-auto w-full">
+        class="border-l border-r border-b dark:border-neutral-700 overflow-x-auto w-full">
         <table class="w-full table-auto whitespace-nowrap divide-y divide-gray-200 mb-0">
-            <thead class="text-left font-semibold text-sm">
+            <thead class="text-left font-semibold text-sm dark:bg-neutral-900 dark:text-gray-200">
                 <tr class="[&>th]:px-4 [&>th]:py-3 divide-x divide-none">
                     <th class="bg-transparent pl-4 py-3"></th>
                     <th class="bg-transparent py-3 whitespace-nowrap">Nama</th>
@@ -266,13 +266,13 @@
                 </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody class="bg-white dark:bg-neutral-900 divide-y divide-gray-10 dark:divide-neutral-700">
                 @forelse($categories as $category)
                     <tr 
                         wire:key="{{ $category->id }}" 
                         @class([
                             "[&>td]:px-4 [&>td]:py-3 divide-x divide-none",
-                            "bg-blue-50" => in_array($category->id, $bulkSelected),
+                            "bg-blue-50 dark:bg-neutral-800" => in_array($category->id, $bulkSelected),
                         ])>
                         {{-- Select --}}
                         <td class="pl-4 py-3">
@@ -286,13 +286,13 @@
 
                         {{-- Name --}}
                         <td class="py-3 whitespace-nowrap">
-                            <p class="text-sm font-normal text-gray-800">{{ $category->name }}</p>
+                            <p class="text-sm font-normal text-gray-800 dark:text-gray-200">{{ $category->name }}</p>
                         </td>
 
                         {{-- Total Video --}}
                         @if ($colPref && $colPref->value['colTotalVideo'])
                             <td class="py-3 whitespace-nowrap">
-                                <p class="text-sm font-normal text-gray-800">{{ $category->videos->count() }}</p>
+                                <p class="text-sm font-normal text-gray-800 dark:text-gray-200">{{ $category->videos->count() }}</p>
                             </td>
                         @endif
 
@@ -311,7 +311,7 @@
 
                         {{-- Created at --}}
                         <td class="py-3 whitespace-nowrap">
-                            <p class="text-sm font-normal text-gray-800">{{ \Carbon\Carbon::parse($category->created_at)->format('d F Y') }}</p>
+                            <p class="text-sm font-normal text-gray-800 dark:text-gray-200">{{ \Carbon\Carbon::parse($category->created_at)->format('d F Y') }}</p>
                         </td>
 
                         {{-- View, Edit & Delete Button --}}
@@ -319,7 +319,7 @@
                             <div class="flex items-center gap-2">
                                 {{-- View Button --}}
                                 <a href="{{ route('category.show', $category->id) }}" class="text-secondary p-0 border-0">
-                                    <div class="flex items-center gap-1 text-gray-500 hover:text-gray-700">
+                                    <div class="flex items-center gap-1 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
                                         <x-icon name="eye" class="w-3.5 h-3.5"/>
                                         <p class="text-sm font-medium hover:underline">View</p>
                                     </div>
@@ -327,7 +327,7 @@
 
                                 {{-- Edit Button --}}
                                 <a href="{{ route('category.edit', $category->id) }}" class="ml-2">
-                                    <div class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
+                                    <div class="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                         <x-icon name="pen" class="w-3 h-3"/>
                                         <p class="text-sm font-medium hover:underline">Edit</p>
                                     </div>
@@ -339,7 +339,7 @@
                                     @click="deleteId = {{ $category->id }}; showDelete = true"
                                     class="ml-2 cursor-pointer"
                                 >
-                                    <div class="flex items-center gap-1 text-red-600 hover:text-red-800">
+                                    <div class="flex items-center gap-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
                                         <x-icon name="trash" class="w-3.5 h-3.5"/>
                                         <p class="text-sm font-medium hover:underline">Delete</p>
                                     </div>
@@ -371,7 +371,7 @@
                                             l2.647-2.646a.5.5 0 0 0-.708-.708L8
                                             7.293z"/>
                                 </svg>
-                                <p class="mt-2 mb-0 text-black">Kategori tidak ditemukan.</p>
+                                <p class="mt-2 mb-0 text-black dark:text-white">Kategori tidak ditemukan.</p>
                             </div>
                         </td>
                     </tr>
@@ -387,18 +387,18 @@
                 @click.self="showDelete = false"
             >
                 <div 
-                    class="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
+                    class="bg-white dark:bg-neutral-900 rounded-lg shadow-xl w-full max-w-md p-6"
                     x-transition.scale
                 >
-                    <h2 class="text-lg font-semibold mb-2 text-gray-800">Hapus Kategori?</h2>
-                    <p class="text-sm text-gray-600 mb-6">
+                    <h2 class="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Hapus Kategori?</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
                         Apakah anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.
                     </p>
 
                     <div class="flex justify-end gap-3">
                         <button 
                             @click="showDelete = false" 
-                            class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer"
+                            class="px-4 py-2 rounded-md bg-gray-200 dark:bg-neutral-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-neutral-600 cursor-pointer"
                         >
                             Batal
                         </button>

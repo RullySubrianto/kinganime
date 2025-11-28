@@ -1,7 +1,7 @@
 <x-layouts.profile contentClass="space-y-6" title="Informasi Pribadi">
     {{-- Personal Information --}}
     <div class="border rounded-lg w-full">
-        <p class="text-xl text-primary font-semibbold p-6 border-b">Informasi Pribadi</p>
+        <p class="text-xl text-primary dark:text-white font-semibbold p-6 border-b">Informasi Pribadi</p>
 
         <form 
             action={{ route('profile.update') }}
@@ -50,7 +50,7 @@
 
     {{-- Password --}}
     <div class="border rounded-lg w-full">
-        <p class="text-xl text-primary font-semibbold p-6 border-b">Ubah Password</p>
+        <p class="text-xl text-primary dark:text-white font-semibbold p-6 border-b">Ubah Password</p>
 
         <form 
             action={{ route('profile.update-password') }}

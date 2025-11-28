@@ -1,5 +1,5 @@
 <x-layouts.app title="Video {{ $video->title }}">
-    <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
+    <section class="flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container py-6">
             {{-- Video --}}
@@ -15,7 +15,7 @@
                     Your browser does not support the video tag.
                 </video>
 
-                {{-- Title --}}
+                {{-- Title & Buttons--}}
                 <div class="mt-4 flex flex-row justify-between px-2">
                     {{-- Title --}}
                     <div class="space-y-2">

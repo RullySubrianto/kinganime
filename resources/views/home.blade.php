@@ -1,5 +1,5 @@
 <x-layouts.app title="Beranda">
-    <section class="bg-gray-50 flex flex-col items-center min-h-[calc(100dvh-130px)]">
+    <section class="flex flex-col items-center min-h-[calc(100dvh-130px)]">
         {{-- Container --}}
         <div class="container space-y-6 py-6">
             {{-- Tabs --}}
@@ -8,7 +8,7 @@
                 @foreach ($categories as $category)
                     <a 
                         href="{{ route('category.show', $category) }}"
-                        class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white">
+                        class="py-2.5 px-5 bg-gray-100 text-black rounded-full hover:bg-primary hover:text-white dark:bg-white/10 dark:text-white dark:hover:bg-primary dark:hover:text-white">
                         {{ $category->name }}
                     </a>
                 @endforeach

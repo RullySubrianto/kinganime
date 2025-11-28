@@ -53,7 +53,7 @@
     ];
 @endphp
 
-<nav class="bg-white py-3 px-2 rounded-xl">
+<nav class="bg-white dark:bg-background dark:border py-3 px-2 rounded-xl">
     <ul class="space-y-2">
         @foreach ($sidebarItems as $sidebarItem)
             {{-- Check permission --}}
@@ -84,7 +84,7 @@
             <li>
                 <a 
                     href={{ route($sidebarItem['route']) }} 
-                    class="flex flex-row items-center gap-2 py-2 px-3 rounded {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
+                    class="flex flex-row items-center gap-2 py-2 px-3 dark:text-white rounded {{ $isActive ? 'text-primary bg-[#276add10]' : 'text-gray-500 hover:text-primary hover:bg-[#276add10]' }}">
                     <x-icon :name="$sidebarItem['icon']" class="w-3.5 h-3.5" />
                     <p class="font-medium">{{ $sidebarItem['label'] }}</p>
                 </a>

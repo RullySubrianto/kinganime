@@ -1,6 +1,6 @@
-<x-layouts.app contentClass="items-center justify-center bg-gray-50 min-h-[calc(100dvh-130px)]">
+<x-layouts.app contentClass="items-center justify-center bg-gray-50 dark:bg-background min-h-[calc(100dvh-130px)]">
     <section class="container flex justify-center">
-        <div class="w-lg bg-white rounded-lg px-4 md:px-10 py-10 flex flex-col gap-8">
+        <div class="w-lg bg-white dark:bg-background dark:border rounded-lg px-4 md:px-10 py-10 flex flex-col gap-8">
             {{-- Title --}}
             <div class="flex flex-col items-center gap-4">
                 <div class="space-y-2 text-center">
@@ -54,7 +54,7 @@
                             name="username"
                             value="{{ old('username') }}"
                             required
-                            class="bg-white!"
+                            class=""
                             placeholder="Nama"
                             autocomplete="username"
                             tabindex="1"
@@ -73,7 +73,7 @@
                             name="email"
                             value="{{ old('email') }}"
                             required
-                            class="bg-white!"
+                            class=""
                             placeholder="john@gmail.com"
                             autocomplete="email"
                             tabindex="2"
@@ -91,7 +91,7 @@
                             id="password"
                             name="password"
                             required
-                            class="bg-white!"
+                            class=""
                             placeholder="Password"
                             autocomplete="password"
                             tabindex="3"
@@ -168,7 +168,7 @@
                             id="password_confirmation"
                             name="password_confirmation"
                             required
-                            class="bg-white!"
+                            class=""
                             placeholder="Konfirmasi Password"
                             autocomplete="password"
                             tabindex="4"

@@ -270,19 +270,23 @@ class ProfileController extends Controller
     // History for Guest
     public function historyGuest(Request $request)
     {
-        // Validate Videos Ids
-        $request->validate([
-            'ids' => 'nullable|array',
-            'ids.*' => 'integer|exists:videos,id',
-        ]);
+        // Step 1: numeric filter (safe)
+        $ids = collect($request->ids)->filter(fn($id) => is_numeric($id))->map(fn($id) => (int)$id)->toArray();
 
-        // Keep original viewing order
-        $orderedIds = $request->ids;
-
-        // dd($request->ids);
-
-        $videos = Video::whereIn('id', $request->ids)
+        // Step 2: get only existing published videos
+        $existingIds = Video::whereIn('id', $ids)
             ->where('status', 'published')
+            ->pluck('id')
+            ->toArray();
+
+        if (empty($existingIds)) {
+            return view('profile.history', ['videos' => null]);
+        }
+
+        // Step 3: preserve the original order
+        $orderedIds = array_values(array_filter($ids, fn($id) => in_array($id, $existingIds)));
+
+        $videos = Video::whereIn('id', $orderedIds)
             ->orderByRaw("FIELD(id, " . implode(',', $orderedIds) . ")")
             ->paginate(12, ['id', 'title', 'thumbnail', 'views_count']);
 

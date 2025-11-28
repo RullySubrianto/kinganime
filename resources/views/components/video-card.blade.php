@@ -46,7 +46,7 @@
                 x-show="open"
                 x-transition.origin.top.right
                 @click.outside="open = false"
-                class="absolute right-0 mt-2 w-auto rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
+                class="absolute right-0 mt-2 w-auto rounded-md shadow-lg bg-white dark:bg-neutral-900 ring-1 ring-black/5 z-50">
                     <div class="p-2 text-sm flex flex-col w-max min-w-fit">
                         {{-- Save Button --}}
                         <form 
@@ -56,7 +56,7 @@
 
                             <button 
                                 type="submit"
-                                class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 rounded">
+                                class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-white/10 rounded">
                                 Tambah ke favorit
                                     <x-icon name="heart" class="w-4 h-4 {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black text-black' : '' }}" />
                             </button>
@@ -70,7 +70,7 @@
 
                             <button 
                                 type="submit"
-                                class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 rounded">
+                                class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-white/10 rounded">
                                 Tambah ke wacthlist
                                 <x-icon name="watchlist" class="w-4 h-4"/>
                             </button>

@@ -1,7 +1,7 @@
 <x-layouts.profile title="Tambah Kategori">
-    {{-- Personal Information --}}
+    {{-- Add Category --}}
     <div class="border rounded-lg w-full">
-        <p class="text-xl text-primary font-semibbold p-6 border-b">Tambah Kategori</p>
+        <p class="text-xl text-primary dark:text-white font-semibbold p-6 border-b">Tambah Kategori</p>
 
         <form 
             action={{ route('category.store') }}

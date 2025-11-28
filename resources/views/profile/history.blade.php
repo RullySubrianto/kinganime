@@ -1,5 +1,5 @@
 <x-layouts.app title="History">
-    <section class="bg-gray-50 min-h-[calc(100dvh-130px)] py-6">
+    <section class="min-h-[calc(100dvh-130px)] py-6">
         {{-- Container --}}
         <div class="container mx-auto flex flex-col lg:flex-row gap-x-6">
             {{-- Sidebar --}}
@@ -42,15 +42,18 @@
                             <script>
                                 let ids = JSON.parse(localStorage.getItem('video_history') || "[]")
 
-                                if (ids.length) {
-                                    let params = new URLSearchParams();
-                                    ids.forEach(id => params.append('ids[]', id));
+                                if (!window.location.pathname.includes('/history-guest')) {
+                                        let ids = JSON.parse(localStorage.getItem('video_history') || "[]");
 
-                                    window.location.href = `/history-guest?${params.toString()}`;
-                                }
+                                        if (ids.length) {
+                                            let params = new URLSearchParams();
+                                            ids.forEach(id => params.append('ids[]', id));
+
+                                            window.location.href = `/history-guest?${params.toString()}`;
+                                        }
+                                    }
                             </script>
                         @endif
-
                     @endif
                 </div>
             </div>

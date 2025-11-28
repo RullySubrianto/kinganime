@@ -1,7 +1,7 @@
 <x-layouts.profile title="Post Video">
-    {{-- Personal Information --}}
+    {{-- Post Video --}}
     <div class="border rounded-lg w-full">
-        <p class="text-xl text-primary font-semibbold p-6 border-b">Post Video</p>
+        <p class="text-xl text-primary dark:text-white font-semibbold p-6 border-b">Post Video</p>
 
         <form 
             action={{ route('post.store') }}
@@ -65,7 +65,7 @@
                         type="button"
                         variant="outline"
                         tabindex="3"
-                        class="flex items-center gap-2 text-primary! border! border-primary! hover:bg-primary/5!"
+                        class="flex items-center gap-2 text-primary! border! border-primary! hover:bg-primary/5! dark:bg-primary dark:text-white!"
                     >
                         <x-icon name="upload" class="w-4 h-4"/>
                         Drag or Click to Upload
