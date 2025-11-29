@@ -1,4 +1,4 @@
-<x-layouts.app contentClass="items-center justify-center bg-gray-50 dark:bg-background min-h-[calc(100dvh-130px)]">
+<x-layouts.app contentClass="items-center justify-center bg-gray-50 dark:bg-background min-h-[calc(100dvh-123px)]">
     <section class="container flex justify-center">
         <div class="w-lg bg-white dark:bg-background dark:border rounded-lg px-4 md:px-10 py-10 flex flex-col gap-8">
             {{-- Title --}}
@@ -86,16 +86,34 @@
                     <div class="grid gap-2">
                         <x-ui.label for="password" :required="true">Password</x-ui.label>
 
-                        <x-ui.input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            class=""
-                            placeholder="Password"
-                            autocomplete="password"
-                            tabindex="3"
-                            x-model="password"/>
+                        <div
+                            class="relative" 
+                            x-data="{ show: false }">
+                            <x-ui.input
+                                x-bind:type="show ? 'text' : 'password'"
+                                id="password"
+                                name="password"
+                                required
+                                class=""
+                                placeholder="Password"
+                                autocomplete="password"
+                                tabindex="3"
+                                x-model="password"/>
+
+                            {{-- Toggle --}}
+                            <button
+                                type="button"
+                                class="absolute top-1.5 right-2.5 p-1 cursor-pointer"
+                                x-on:click="show = !show"
+                            >
+                                <span x-cloak x-show="!show">
+                                    <x-icon name="eye-password" class="w-4 h-4" />
+                                </span>
+                                <span x-cloak x-show="show">
+                                    <x-icon name="eye-slash-password" class="w-4 h-4" />
+                                </span>
+                            </button>
+                        </div>
 
                         {{-- Validation --}}
                         <div class="mt-1 space-y-1 text-sm">
@@ -163,16 +181,34 @@
                     <div class="grid gap-2">
                         <x-ui.label for="password_confirmation" :required="true">Konfirmasi Password</x-ui.label>
 
-                        <x-ui.input
-                            type="password"
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            required
-                            class=""
-                            placeholder="Konfirmasi Password"
-                            autocomplete="password"
-                            tabindex="4"
-                            x-model="confirm"/>
+                        <div
+                            class="relative" 
+                            x-data="{ showConfirm: false }">
+                            <x-ui.input
+                                x-bind:type="showConfirm ? 'text' : 'password'"
+                                id="password_confirmation"
+                                name="password_confirmation"
+                                required
+                                class=""
+                                placeholder="Konfirmasi Password"
+                                autocomplete="password"
+                                tabindex="4"
+                                x-model="confirm"/>
+                            
+                            {{-- Toggle --}}
+                            <button
+                                type="button"
+                                class="absolute top-1.5 right-2.5 p-1 cursor-pointer"
+                                x-on:click="showConfirm = !showConfirm"
+                            >
+                                <span x-cloak x-show="!showConfirm">
+                                    <x-icon name="eye-password" class="w-4 h-4" />
+                                </span>
+                                <span x-cloak x-show="showConfirm">
+                                    <x-icon name="eye-slash-password" class="w-4 h-4" />
+                                </span>
+                            </button>
+                        </div>
 
                         <p class="flex items-center gap-2 mt-1 text-sm"
                             :class="{
@@ -195,15 +231,31 @@
                         <x-error-inline-input :value="'password_confirmation'"/>
                     </div>
 
-                    {{-- Submit Button --}}
-                    <x-ui.button
-                        type="submit"
-                        class="mt-2 w-full"
-                        tabindex="5"
-                        x-bind:disabled="!allValid"
-                        x-bind:class="!allValid ? 'opacity-50 cursor-not-allowed' : ''">
-                        Daftar
-                    </x-ui.button>
+                    <div>
+                        {{-- Validation Error Message --}}
+                        @if ($errors->any())
+                            <ul class="mb-1">
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-sm font-medium my-1 text-red-600">{{ $error }}</li>  
+                                @endforeach    
+                            </ul>                
+                        @endif
+
+                        {{-- Submit Button --}}
+                        <x-ui.button
+                            type="submit"
+                            class="mt-2 w-full"
+                            tabindex="5"
+                            x-bind:disabled="!allValid"
+                            x-bind:class="!allValid ? 'opacity-50 cursor-not-allowed' : ''">
+                            Daftar
+                        </x-ui.button>
+
+                        <p class="text-center mt-4 text-sm ">
+                            Sudah memiliki akun?
+                            <a href="{{ route('login') }}" class="underline text-primary dark:text-white hover:text-primry/90 dark:hover:text-gray-200">Masuk</a>
+                        </p>
+                    </div>
                 </div>
 
             </form>

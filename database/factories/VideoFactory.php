@@ -22,6 +22,7 @@ class VideoFactory extends Factory
         return [
             // House Info
             'title' => fake()->jobTitle(),
+            'slug' => uniqid(),
             'thumbnail' => $thumbnail,
             'external_link' => 'https://cdn.videy.co/6iMolLRA1.mp4',
             'status' => fake()->randomElement(['published', 'draft']),

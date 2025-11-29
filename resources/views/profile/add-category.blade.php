@@ -21,6 +21,7 @@
                     tabIndex="1"
                     autoComplete="categoryName"
                     placeholder="Nama"
+                    value="{{ old('name') }}"
                 />
 
                 <x-error-inline-input :value="'name'"/>
@@ -97,7 +98,7 @@
                         x-cloak
                         x-show="open"
                         x-transition
-                        class="absolute mt-1 w-full bg-white border rounded shadow z-50"
+                        class="absolute mt-1 w-full bg-white dark:bg-neutral-900 border rounded shadow z-50"
                         style="display: none;"
                     >
                         <template x-for="item in filtered" :key="item.id">
@@ -105,7 +106,7 @@
                             <div 
                                 @mousedown.prevent="add(item)"
                                 @click.stop
-                                class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer"
                             >
                                 <span x-text="item.title"></span>
                             </div>

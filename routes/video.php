@@ -9,7 +9,7 @@ Route::controller(VideoController::class)->group(function () {
         ->name('index');
 
     // Search Video Page
-    Route::get('/cari-video', 'searchVideo')
+    Route::get('/cari-video/{search?}', 'searchVideo')
         ->name('search-video');
 
     // Post Video Page in Profile - Admin

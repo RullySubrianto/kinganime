@@ -1,4 +1,4 @@
-<x-layouts.app contentClass="items-center justify-center bg-gray-50 dark:bg-background min-h-[calc(100dvh-130px)]">
+<x-layouts.app contentClass="items-center justify-center bg-gray-50 dark:bg-background min-h-[calc(100dvh-123px)]">
     <section class="container flex justify-center">
         <div class="w-lg bg-white dark:bg-background dark:border rounded-lg px-4 md:px-10 py-10 flex flex-col gap-8">
             {{-- Title --}}
@@ -46,19 +46,42 @@
                     <div class="grid gap-2">
                         <x-ui.label for="password" :required="true">Password</x-ui.label>
 
-                        <x-ui.input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            class=""
-                            placeholder="Password"
-                            autocomplete="password"
-                            tabindex="2"
-                            x-model="password"/>
+                        <div 
+                            class="relative"
+                            x-data="{ show: false }">
+                            <x-ui.input
+                                x-bind:type="show ? 'text' : 'password'"
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class=""
+                                placeholder="Password"
+                                autocomplete="password"
+                                tabindex="2"
+                                x-model="password"/>
+
+                            {{-- Toggle Button --}}
+                            <button
+                                type="button"
+                                class="absolute top-1 right-2.5 p-1 cursor-pointer"
+                                x-on:click="show = !show"
+                                x-bind:aria-label="show ? 'Sembunyikan password' : 'Tampilkan password'"
+                            >
+                                {{-- Prevent Flicker on Page Load --}}
+                                <span x-cloak x-show="!show" class="inline-block">
+                                    <x-icon name="eye-password" class="w-4 h-4" />
+                                </span>
+
+                                <span x-cloak x-show="show" class="inline-block">
+                                    <x-icon name="eye-slash-password" class="w-4 h-4" />
+                                </span>
+                            </button>
+                        </div>
                     </div>
 
                     <div>
+                        {{-- Validation Error Message --}}
                         @if ($errors->any())
                             <ul class="mb-1">
                                 @foreach ($errors->all() as $error)
@@ -66,6 +89,7 @@
                                 @endforeach    
                             </ul>                
                         @endif
+
                         {{-- Submit Button --}}
                         <x-ui.button
                             type="submit"
@@ -75,6 +99,11 @@
                             x-bind:class="!ready ? 'opacity-50 cursor-not-allowed' : ''">
                             Masuk
                         </x-ui.button>
+
+                        <p class="text-center mt-4 text-sm ">
+                            Belum memiliki akun?
+                            <a href="{{ route('register') }}" class="underline text-primary dark:text-white hover:text-primry/90 dark:hover:text-gray-200">Daftar</a>
+                        </p>
                     </div>
                 </div>
             </form>

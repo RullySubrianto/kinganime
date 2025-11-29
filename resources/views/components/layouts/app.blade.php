@@ -1,18 +1,19 @@
 @props(['contentClass' => '', 'title' => null])
 
 <!DOCTYPE html>
-<html 
-    lang="en" 
-    x-data="{ 
-        dark: localStorage.getItem('dark') 
-            ? localStorage.getItem('dark') === 'true' 
-            : true  // default = dark
-    }"
-    x-bind:class="dark ? 'dark' : ''">
+<html lang="en" x-data="{ dark: localStorage.getItem('dark') === 'true' }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ isset($title) ? $title . " - " . config('app.name') : config('app.name') }}</title>
+
+    <script>
+        // Prevent white flash by setting dark class before CSS loads
+        const isDark = localStorage.getItem('dark');
+        if (isDark === null || isDark === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -48,17 +49,15 @@
             class="fixed top-5 right-5 z-50"
         >
             <div class="
-                px-4 py-3 
-                rounded-lg shadow-lg text-black text-sm
-                flex items-center gap-2
-                bg-white
+                px-4 py-3 rounded-xl shadow-lg text-sm flex items-center gap-3
+                bg-white text-neutral-800 border border-neutral-200 
+                dark:bg-neutral-900 dark:text-neutral-100 dark:border-neutral-700
             ">
                 {{-- Icon --}}
-                @if(session('success'))
-                    <x-icon name="check-circle" class="w-4 h-4" />
-                @else
-                    <x-icon name="x-circle" class="w-4 h-4" />
-                @endif
+                <x-icon 
+                    :name="session('success') ? 'check-circle' : 'x-circle'" 
+                    class="w-4 h-4 text-neutral-600 dark:text-neutral-300"
+                />
 
                 {{-- Message --}}
                 <p class="text-sm font-medium">

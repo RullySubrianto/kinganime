@@ -47,6 +47,9 @@ class AllVideo extends Component
     public $colViewsCount = false;
 
     #[Validate('required|boolean')]
+    public $colViewsCountReal = false;
+
+    #[Validate('required|boolean')]
     public $colCategory = false;
     
     // Initialilzing
@@ -72,6 +75,7 @@ class AllVideo extends Component
             $this->colExternalLink = $colPref->value['colExternalLink'];
             $this->colStatus = $colPref->value['colStatus'];
             $this->colViewsCount = $colPref->value['colViewsCount'];
+            $this->colViewsCountReal = $colPref->value['colViewsCountReal'];
             $this->colCategory = $colPref->value['colCategory'];
         }
 
@@ -92,6 +96,7 @@ class AllVideo extends Component
             'colExternalLink' => 'required|boolean',
             'colStatus' => 'required|boolean',
             'colViewsCount' => 'required|boolean',
+            'colViewsCountReal' => 'required|boolean',
             'colCategory' => 'required|boolean',
         ]);
 
@@ -143,6 +148,7 @@ class AllVideo extends Component
         $this->colExternalLink = false;
         $this->colStatus = false;
         $this->colViewsCount = false;
+        $this->colViewsCountReal = false;
         $this->colCategory = false;
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
 
             // Video Info
             $table->string('title');
+            $table->string('slug');
             $table->string('thumbnail');
             // $table->string('filename')->nullable();
             $table->string('external_link')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
 
             // Tracking
             $table->integer('views_count')->default(fake()->numberBetween(50000, 2000000));
+            $table->integer('views_count_real')->default(0);
 
             // Relation
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');

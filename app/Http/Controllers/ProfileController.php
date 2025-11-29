@@ -270,25 +270,35 @@ class ProfileController extends Controller
     // History for Guest
     public function historyGuest(Request $request)
     {
-        // Step 1: numeric filter (safe)
-        $ids = collect($request->ids)->filter(fn($id) => is_numeric($id))->map(fn($id) => (int)$id)->toArray();
-
-        // Step 2: get only existing published videos
-        $existingIds = Video::whereIn('id', $ids)
-            ->where('status', 'published')
-            ->pluck('id')
+        // Step 1: validate slugs format (safe)
+        $slugs = collect($request->slugs ?? [])
+            ->filter(fn($slug) => preg_match('/^[a-f0-9]{13}$/i', $slug)) // allow only valid uniqid()
+            ->values()
             ->toArray();
 
-        if (empty($existingIds)) {
+        // Step 2: get only existing published videos
+        $existingSlugs = Video::whereIn('slug', $slugs)
+            ->where('status', 'published')
+            ->pluck('slug')
+            ->toArray();
+
+        if (empty($existingSlugs)) {
             return view('profile.history', ['videos' => null]);
         }
 
         // Step 3: preserve the original order
-        $orderedIds = array_values(array_filter($ids, fn($id) => in_array($id, $existingIds)));
+        $orderedSlugs = array_values(array_filter(
+            $slugs,
+            fn($slug) => in_array($slug, $existingSlugs)
+        ));
 
-        $videos = Video::whereIn('id', $orderedIds)
-            ->orderByRaw("FIELD(id, " . implode(',', $orderedIds) . ")")
-            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count']);
+        $orderBindings = $orderedSlugs; // array: ['692ab64d40c58', '692ab2b8a0ca7']
+        $placeholders = rtrim(str_repeat('?,', count($orderBindings)), ',');
+
+        $videos = Video::whereIn('slug', $orderedSlugs)
+            ->orderByRaw("FIELD(slug, $placeholders)", $orderBindings)
+            ->paginate(12, ['id', 'title', 'slug', 'thumbnail', 'views_count']);
+
 
         return view('profile.history', [
             'videos' => $videos,

@@ -19,7 +19,7 @@ class VideoController extends Controller
         // Videos
         $videos = Video::where('status', 'published')
             ->latest()
-            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count'])
+            ->paginate(12, ['id', 'title', 'slug' , 'thumbnail', 'views_count'])
             ->onEachSide(1);
 
         // Categrories
@@ -57,7 +57,7 @@ class VideoController extends Controller
         $videos = $videos
             ->where('status', 'published')
             ->latest()
-            ->paginate(12, ['id', 'title', 'thumbnail', 'views_count'])
+            ->paginate(12, ['id', 'title', 'slug' , 'thumbnail', 'views_count'])
             ->appends($request->query())
             ->onEachSide(1);
 
@@ -129,6 +129,7 @@ class VideoController extends Controller
 
         // Increase Views Count safely
         $video->increment('views_count');
+        $video->increment('views_count_real');
 
         // User Data
         /** @var \App\Models\User $user */
@@ -141,16 +142,10 @@ class VideoController extends Controller
             ]);
         }
 
-        // Video
-        $video = Video::select('id', 'title', 'thumbnail', 'external_link', 'views_count')
-            ->findOrFail($video->id);
-
-        // Other Videos
         $otherVideos = Video::where('status', 'published')
             ->where('id', '!=', $video->id)
-            ->latest()
-            ->limit(12)
-            ->get(['id', 'title', 'thumbnail', 'views_count']);
+            ->limit(20)
+            ->get(['id', 'title', 'slug', 'thumbnail', 'views_count']);
         
         // Return Page
         return view('video', [
@@ -166,7 +161,7 @@ class VideoController extends Controller
         $videos = $category->videos()
             ->where('status', 'published')
             ->orderBy('videos.created_at', 'desc')
-            ->paginate(12, ['videos.id', 'videos.title', 'videos.thumbnail', 'videos.views_count'])
+            ->paginate(12, ['videos.id', 'videos.title', 'videos.slug', 'videos.thumbnail', 'videos.views_count'])
             ->onEachSide(1);
 
         return view('category', [

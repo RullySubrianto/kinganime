@@ -4,7 +4,7 @@
 <div>
     {{-- Thumbnail --}}
     <a 
-        href={{ route('video.show', $video->id) }}
+        href={{ route('video.show', $video->slug) }}
         class="">
         <img 
             src="{{ $video->thumbnail }}" 
@@ -21,7 +21,7 @@
     <div class="flex justify-between mt-4 px-2">
         {{-- Title --}}
         <div>
-            <a href={{ route('video.show', $video->id) }} class="hover:underline">
+            <a href={{ route('video.show', $video->slug) }} class="hover:underline">
                 <h1 class="font-medium line-clamp-1">{{ $video->title }}</h1>
             </a>
             <p class="text-sm">{{ \Illuminate\Support\Number::abbreviate($video->views_count) }} Views</p>
@@ -50,7 +50,7 @@
                     <div class="p-2 text-sm flex flex-col w-max min-w-fit">
                         {{-- Save Button --}}
                         <form 
-                            action={{ route('video.save', $video->id) }}
+                            action={{ route('video.save', $video->slug) }}
                             method="POST">
                             @csrf
 
@@ -58,13 +58,13 @@
                                 type="submit"
                                 class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-white/10 rounded">
                                 Tambah ke favorit
-                                    <x-icon name="heart" class="w-4 h-4 {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black text-black' : '' }}" />
+                                    <x-icon name="heart" class="w-4 h-4 {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black text-black dark:fill-white dark:text-white' : '' }}" />
                             </button>
                         </form>
 
                         {{-- Save To Watchlist Button --}}
                         <form 
-                            action={{ route('video.save.watchlist', $video->id) }}
+                            action={{ route('video.save.watchlist', $video->slug) }}
                             method="POST">
                             @csrf
 
@@ -78,19 +78,5 @@
                     </div>
             </div>
         </div>
-
-        {{-- Save Button --}}
-        {{-- <form 
-            action={{ route('video.save', $video->id) }}
-            method="POST">
-            @csrf
-
-            <x-ui.button
-                type="submit"
-                variant="link"
-                size="icon">
-                <x-iconpark-like-o class="w-5! h-5!"/>
-            </x-ui.button>
-        </form> --}}
     </div>
 </div>

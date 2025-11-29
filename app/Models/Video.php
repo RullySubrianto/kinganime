@@ -10,6 +10,21 @@ class Video extends Model
     /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($video) {
+            $video->slug = uniqid();
+        });
+    }
+
+    // Route model binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected $guarded = [];
 
     public function user()

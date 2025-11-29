@@ -4,7 +4,7 @@
         <p class="text-xl text-primary font-semibbold p-6 border-b">Edit Video</p>
 
         <form 
-            action={{ route('all-video.update', $video->id) }}
+            action={{ route('all-video.update', $video->slug) }}
             method="POST"
             enctype="multipart/form-data"
             class="flex flex-col gap-6 p-6"
@@ -95,7 +95,7 @@
                         id="selectedThumbnail" 
                         src="{{ $video->thumbnail ? asset($video->thumbnail) : '' }}"
                         alt="Thumbnail" 
-                        class="h-60 aspect-video object-contain bg-[#d9d9d9] rounded-xl" 
+                        class="h-60 aspect-video object-contain bg-gray-200 rounded-xl" 
                         style="{{ $video->thumbnail ? '' : 'display:none;' }}"/>
                 </div>
             </div>
@@ -169,7 +169,7 @@
                         x-cloak
                         x-show="open"
                         x-transition
-                        class="absolute mt-1 w-full bg-white border rounded shadow z-50"
+                        class="absolute mt-1 w-full bg-white dark:bg-neutral-900 border rounded shadow z-50"
                         style="display: none;"
                     >
                         <template x-for="item in filtered" :key="item.id">
@@ -177,7 +177,7 @@
                             <div 
                                 @mousedown.prevent="add(item)"
                                 @click.stop
-                                class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer"
                             >
                                 <span x-text="item.name"></span>
                             </div>

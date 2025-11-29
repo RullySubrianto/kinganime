@@ -49,7 +49,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // Redirect
-        return redirect(route('profile.index'));
+        return redirect(route('profile.index'))->with('success', 'Selamat datang di ' . config('app.name'));
     }
 
     // Login
@@ -78,7 +78,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect(route('profile.index'));
+            return redirect(route('profile.index'))->with('success', 'Selemat datang kembali di ' . config('app.name'));
         }
 
         throw ValidationException::withMessages([

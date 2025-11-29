@@ -27,7 +27,7 @@
                     <div class="flex flex-row gap-4">
                         {{-- Save To Watchlist Button --}}
                         <form 
-                            action={{ route('video.save.watchlist', $video->id) }}
+                            action={{ route('video.save.watchlist', $video->slug) }}
                             method="POST">
                             @csrf
 
@@ -36,13 +36,13 @@
                                 variant="link"
                                 size="icon"
                                 class="w-full text-left flex flex-row items-center justify-between gap-3 rounded">
-                                <x-icon name="watchlist" class="w-6! h-6! text-black"/>
+                                <x-icon name="watchlist" class="w-6! h-6! text-black dark:text-white"/>
                             </x-ui.button>
                         </form>
 
                         {{-- Save Button --}}
                         <form 
-                            action={{ route('video.save', $video->id) }}
+                            action={{ route('video.save', $video->slug) }}
                             method="POST">
                             @csrf
 
@@ -51,11 +51,25 @@
                                 variant="link"
                                 size="icon"
                                 class="w-full text-left flex flex-row items-center justify-between gap-3 rounded">
-                                <x-icon name="heart" class="w-6! h-6! text-black {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black' : '' }}" />
+                                <x-icon name="heart" class="w-6! h-6! text-black dark:text-white {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black dark:fill-white' : '' }}" />
                             </x-ui.button>
                         </form>
                     </div>
                 </div>
+
+                {{-- Category Tag Piils --}}
+                <p class="mt-4 text-xl">Tag video:</p>
+                <ul class="flex flex-row items-center gap-2 mt-2">
+                    @foreach ($video->categories as $videoCategory)
+                        <li>
+                            <a 
+                                href="{{ route('category.show', $videoCategory) }}"
+                                class="py-2 px-2.5 bg-gray-100 text-black text-sm rounded-full hover:bg-primary hover:text-white dark:bg-white/10 dark:text-white dark:hover:bg-primary dark:hover:text-white">
+                                {{ $videoCategory->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </article>
 
             {{-- Other Videos --}}
@@ -72,18 +86,15 @@
     </section>
 
     <script>
-        const videoId = "{{ $video->id }}";
-        console.log(videoId);
+        const videoSlug = "{{ $video->slug }}";
 
         let history = JSON.parse(localStorage.getItem('video_history')) || [];
 
         // Avoid Duplicate
-        history = history.filter(id => id !== videoId);
-        history.unshift(videoId);
+        history = history.filter(id => id !== videoSlug);
+        history.unshift(videoSlug);
 
         // Limit
         localStorage.setItem('video_history', JSON.stringify(history.slice(0,100)));
     </script>
-
-
 </x-layouts.app>

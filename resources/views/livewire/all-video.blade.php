@@ -163,6 +163,11 @@
                                 </label>
 
                                 <label class="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
+                                    <input wire:model="colViewsCountReal" type="checkbox" class="cursor-pointer"/>
+                                    Viewers Asli
+                                </label>
+
+                                <label class="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
                                     <input wire:model="colCategory" type="checkbox" class="cursor-pointer"/>
                                     Kategori
                                 </label>
@@ -284,6 +289,10 @@
                         <th class="bg-transparent py-3 whitespace-nowrap">Viewers</th>
                     @endif
 
+                    @if ($colPref && $colPref->value['colViewsCountReal'])
+                        <th class="bg-transparent py-3 whitespace-nowrap">Viewers Asli</th>
+                    @endif
+
                     @if ($colPref && $colPref->value['colCategory'])
                         <th class="bg-transparent py-3 whitespace-nowrap">Kategori</th>
                     @endif
@@ -357,6 +366,13 @@
                             </td>
                         @endif
 
+                        {{-- Real Views Count --}}
+                        @if ($colPref && $colPref->value['colViewsCountReal'])
+                            <td class="py-3 whitespace-nowrap">
+                                <p class="text-sm font-normal text-gray-800 dark:text-gray-200">{{ \Illuminate\Support\Number::abbreviate($video->views_count_real) }} Views</p>
+                            </td>
+                        @endif
+
                         {{-- Category --}}
                         @if ($colPref && $colPref->value['colCategory'])
                             <td class="py-3 whitespace-nowrap">
@@ -379,7 +395,7 @@
                         <td class="pr-4 py-3 whitespace-nowrap">
                             <div class="flex items-center gap-2">
                                 {{-- View Button --}}
-                                <a href="{{ route('video.show', $video->id) }}" class="text-secondary p-0 border-0">
+                                <a href="{{ route('video.show', $video->slug) }}" class="text-secondary p-0 border-0">
                                     <div class="flex items-center gap-1 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
                                         <x-icon name="eye" class="w-3.5 h-3.5"/>
                                         <p class="text-sm font-medium hover:underline">View</p>
@@ -387,7 +403,7 @@
                                 </a>
 
                                 {{-- Edit Button --}}
-                                <a href="{{ route('all-video.edit', $video->id) }}" class="ml-2">
+                                <a href="{{ route('all-video.edit', $video->slug) }}" class="ml-2">
                                     <div class="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                         <x-icon name="pen" class="w-3 h-3"/>
                                         <p class="text-sm font-medium hover:underline">Edit</p>
@@ -406,7 +422,7 @@
                                     </div>
                                 </button>
 
-                                <form id="all-video.destroy-{{ $video->id }}" action="{{ route('all-video.destroy', $video->id) }}" method="POST" class="hidden">
+                                <form id="all-video.destroy-{{ $video->id }}" action="{{ route('all-video.destroy', $video->slug) }}" method="POST" class="hidden">
                                     @csrf
                                     @method('DELETE')
                                 </form>
