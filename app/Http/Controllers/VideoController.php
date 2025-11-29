@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ImageHelper;
+use App\Jobs\ProcessVideoUpload;
 use App\Models\Category;
 use App\Models\Video;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class VideoController extends Controller
 {
@@ -17,10 +19,17 @@ class VideoController extends Controller
     public function home()
     {
         // Videos
-        $videos = Video::where('status', 'published')
-            ->latest()
-            ->paginate(12, ['id', 'title', 'slug' , 'thumbnail', 'views_count'])
-            ->onEachSide(1);
+        $videos = Cache::remember('videos', 60, function () {
+            return Video::where('status', 'published')
+                ->latest()
+                ->paginate(12, ['id', 'title', 'slug' , 'thumbnail', 'views_count'])
+                ->onEachSide(1);
+        });
+
+        // $videos = Video::where('status', 'published')
+        //     ->latest()
+        //     ->paginate(12, ['id', 'title', 'slug' , 'thumbnail', 'views_count'])
+        //     ->onEachSide(1);
 
         // Categrories
         $categories = Category::latest()->get(['id', 'name']);
@@ -87,7 +96,7 @@ class VideoController extends Controller
         $video = $request->validate([
             'title' => 'required|string',
             'external_link' => 'required|string', 
-            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480|dimensions:ratio=25/14',
+            'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp',
             'status' => 'required|in:published,draft',
         ]);
         
@@ -102,20 +111,21 @@ class VideoController extends Controller
 
         // Associate User
         $video->user()->associate(Auth::user());
+
+        // Save model
+        $video->save();
         
         // Handle Thubmnail
         if ($request->hasFile('thumbnail')) {
-            $path = ImageHelper::optimizeAndStore($request->file('thumbnail'), 'uploads/thumbnail');
-            
-            // Add Thumbnail Record
-            $video->thumbnail = $path;
-            
-            // Save Model
-            $video->save();
+            // Store thumbnail
+            $thumbnailPath = $request->file('thumbnail')->store('uploads/thumbnails', 'public');
+
+            // Dispatch job to process thumbnail + categories
+            ProcessVideoUpload::dispatch($video, $thumbnailPath, $request->categories);
         }
 
         // Update Category in Pivot Table
-        $video->categories()->sync($request->categories);
+        // $video->categories()->sync($request->categories);
 
         // Return Back
         return back()->with('success','Video Berhasil Dipost.');

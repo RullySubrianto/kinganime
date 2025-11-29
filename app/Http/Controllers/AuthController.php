@@ -81,9 +81,10 @@ class AuthController extends Controller
             return redirect(route('profile.index'))->with('success', 'Selemat datang kembali di ' . config('app.name'));
         }
 
-        throw ValidationException::withMessages([
-            'credentials' => 'Email atau password salah'
-        ]);
+        // Wrong password/email
+        return back()
+            ->withErrors(['credentials' => 'Email atau password salah'])
+            ->withInput();
     }
 
     // Logout

@@ -29,4 +29,23 @@ class ImageHelper
 
         return "/storage/$original";
     }
+
+    /**
+     * Queue-safe version: optimize from existing file path
+     */
+    public static function optimizeAndStoreFromPath($filePath, $folder)
+    {
+        $uniqueName = uniqid();
+
+        $original = "$folder/$uniqueName.webp";
+
+        Image::load($filePath)
+            ->format('webp')
+            ->width(400)
+            ->quality(80)
+            ->optimize()
+            ->save(storage_path("app/public/$original"));
+
+        return "/storage/$original";
+    }
 }

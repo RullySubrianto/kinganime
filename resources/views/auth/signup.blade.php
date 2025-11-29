@@ -13,8 +13,8 @@
                 method="POST"
                 class="flex flex-col gap-6"
                 x-data="{
-                    username: '',
-                    email: '',
+                    username: '{{ old("username") }}',
+                    email: '{{ old("email") }}',
                     password: '',
                     confirm: '',
 
@@ -52,7 +52,6 @@
                             type="text"
                             id="username"
                             name="username"
-                            value="{{ old('username') }}"
                             required
                             class=""
                             placeholder="Nama"
@@ -71,7 +70,6 @@
                             type="email"
                             id="email"
                             name="email"
-                            value="{{ old('email') }}"
                             required
                             class=""
                             placeholder="john@gmail.com"

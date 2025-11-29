@@ -54,11 +54,15 @@
                             method="POST">
                             @csrf
 
+                            @php
+                                $saved = auth()->user() && auth()->user()->savedVideo->contains($video->id);
+                            @endphp
+
                             <button 
                                 type="submit"
                                 class="w-full text-left flex flex-row items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-white/10 rounded">
-                                Tambah ke favorit
-                                    <x-icon name="heart" class="w-4 h-4 {{ auth()->user() && auth()->user()->savedVideo->contains($video->id) ? 'fill-black text-black dark:fill-white dark:text-white' : '' }}" />
+                                {{ $saved ? 'Hapus dari favorit' : 'Tambah ke favorit' }}
+                                    <x-icon name="heart" class="w-4 h-4 {{ $saved ? 'fill-black text-black dark:fill-white dark:text-white' : '' }}" />
                             </button>
                         </form>
 

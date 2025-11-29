@@ -13,7 +13,7 @@
                 method="POST"
                 class="flex flex-col gap-6"
                 x-data="{
-                    email: '',
+                    email: '{{ old("email") }}',
                     password: '',
                     get ready() {
                         return (
@@ -33,7 +33,6 @@
                             type="email"
                             id="email"
                             name="email"
-                            value="{{ old('email') }}"
                             required
                             class=""
                             placeholder="john@gmail.com"
